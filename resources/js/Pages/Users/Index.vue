@@ -5,17 +5,12 @@
     <div class="flex items-center justify-between mb-6">
       <search-filter v-model="form.search" class="mr-4 w-full max-w-md" @reset="reset">
         <label class="block text-gray-700">Role:</label>
-        <select v-model="form.role" class="form-select mt-1 w-full">
+        <select v-model="form.role_id" class="form-select mt-1 w-full">
           <option :value="null" />
           <option value="user">User</option>
-          <option value="owner">Owner</option>
+          <option value="role_id">Role</option>
         </select>
-        <label class="block mt-4 text-gray-700">Trashed:</label>
-        <select v-model="form.trashed" class="form-select mt-1 w-full">
-          <option :value="null" />
-          <option value="with">With Trashed</option>
-          <option value="only">Only Trashed</option>
-        </select>
+
       </search-filter>
       <Link class="btn-indigo" href="/users/create">
         <span>Create</span>
@@ -34,7 +29,6 @@
             <Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="`/users/${user.id}/edit`">
               <img v-if="user.photo" class="block -my-2 mr-2 w-5 h-5 rounded-full" :src="user.photo" />
               {{ user.name }}
-              <icon v-if="user.deleted_at" name="trash" class="flex-shrink-0 ml-2 w-3 h-3 fill-gray-400" />
             </Link>
           </td>
           <td class="border-t">
@@ -44,7 +38,7 @@
           </td>
           <td class="border-t">
             <Link class="flex items-center px-6 py-4" :href="`/users/${user.id}/edit`" tabindex="-1">
-              {{ user.owner ? 'Owner' : 'User' }}
+              {{ user.role_id == 1 ? 'Admin' : 'Wakif' }}
             </Link>
           </td>
           <td class="w-px border-t">
@@ -86,8 +80,7 @@ export default {
     return {
       form: {
         search: this.filters.search,
-        role: this.filters.role,
-        trashed: this.filters.trashed,
+        role_id: this.filters.role_id,
       },
     }
   },
