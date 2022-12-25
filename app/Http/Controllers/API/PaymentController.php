@@ -174,6 +174,7 @@ class PaymentController extends Controller
             return response()
                 ->json([
                     'success' => false,
+                    'data' => $user,
                     'message' => 'Gagal membuat pembayaran! err : '.$exception->getMessage().'di line '.$exception->getLine(),
                 ]);
         }
