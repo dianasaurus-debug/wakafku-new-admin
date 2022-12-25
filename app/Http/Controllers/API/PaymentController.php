@@ -146,7 +146,7 @@ class PaymentController extends Controller
         $waqf = WaqfTransaction::where('reference_code', $external_id)->first();
         $user = Waqif::where('user_id', $waqf->user_id)->first();
 
-        return $user;
+        return $waqf;
 //        try {
 //
 ////            $program = Program::where('id', $waqf->program_id)->first();
