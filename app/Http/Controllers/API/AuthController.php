@@ -95,8 +95,8 @@ class AuthController extends Controller
                 ->where('role_id', 2)
                 ->with('waqif')
                 ->first();
+            $waqif = Waqif::where('user_id', $user->id)->with('user')->first();
             if($user->waqif->is_verified == null){
-                $waqif = Waqif::where('user_id', $user->id)->with('user')->first();
                 $waqif->update(['otp_code' => rand(100000, 999999)]);
                 $waqif->update(['otp_expires_at' => Carbon::now()->addMinutes(10)]);
                 $waqif->notify(new SendOTPCode());
@@ -110,6 +110,8 @@ class AuthController extends Controller
 
             } else {
                 $token = $user->createToken('auth_token')->plainTextToken;
+                $waqif->update(['fcm_token' => $request->fcm_token]);
+
                 return response()
                     ->json([
                         'success' => true,
