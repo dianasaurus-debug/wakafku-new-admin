@@ -140,47 +140,48 @@ class PaymentController extends Controller
     }
     public function get_va_response(Request $request)
     {
-        try {
-            $notification_body = json_decode($request->getContent(), true);
+        $notification_body = json_decode($request->getContent(), true);
 
-            $external_id = $notification_body['external_id'];
-            return $external_id;
-            $waqf = WaqfTransaction::where('reference_code', $external_id)->first();
-            $program = Program::where('id', $waqf->program_id)->first();
-            $user = Waqif::where('user_id', $waqf->user_id)->first();
-            return $user;
-
-            if($waqf!=null){
-                $notif_title = 'Selesaikan pembayaran Anda';
-                $notif_desc = 'Mohon lunasi pembayaran agar dapat masuk ke dompet wakaf';
-                create_firebase_notif($user->fcm_token, $notif_title, $notif_desc);
-                create_notification_data($user->id, 0, $notif_title, $notif_desc);
-                $tokens = get_all_admintokens();
-                create_mass_firebase_notif($tokens, 'Halo, ada pembayaran wakaf masuk', 'Dana sebesar '.$waqf->amount.' telah masuk ke program '.$program->title);
-                $waqf->update(['status'=> 1]);
-                $waqf->update(['paid_at'=> Carbon::now()]);
-                $program->update(['terkumpul' => $program->terkumpul+$waqf->amount]);
-                return response()
-                    ->json([
-                        'success' => true,
-                        'message' => 'Sukses update pembayaran!',
-                    ]);
-            } else {
-                return response()
-                    ->json([
-                        'success' => false,
-                        'message' => 'Gagal update pembayaran! data order tidak ditemukan',
-                    ]);
-            }
-
-        } catch (\Exception $exception) {
-            return response()
-                ->json([
-                    'success' => false,
-                    'data' => $user,
-                    'message' => 'Gagal membuat pembayaran! err : '.$exception->getMessage().'di line '.$exception->getLine(),
-                ]);
-        }
-
+        $external_id = $notification_body['external_id'];
+        return $external_id;
+//        try {
+//
+////            $waqf = WaqfTransaction::where('reference_code', $external_id)->first();
+////            $program = Program::where('id', $waqf->program_id)->first();
+////            $user = Waqif::where('user_id', $waqf->user_id)->first();
+////            return $user;
+////
+////            if($waqf!=null){
+////                $notif_title = 'Selesaikan pembayaran Anda';
+////                $notif_desc = 'Mohon lunasi pembayaran agar dapat masuk ke dompet wakaf';
+////                create_firebase_notif($user->fcm_token, $notif_title, $notif_desc);
+////                create_notification_data($user->id, 0, $notif_title, $notif_desc);
+////                $tokens = get_all_admintokens();
+////                create_mass_firebase_notif($tokens, 'Halo, ada pembayaran wakaf masuk', 'Dana sebesar '.$waqf->amount.' telah masuk ke program '.$program->title);
+////                $waqf->update(['status'=> 1]);
+////                $waqf->update(['paid_at'=> Carbon::now()]);
+////                $program->update(['terkumpul' => $program->terkumpul+$waqf->amount]);
+////                return response()
+////                    ->json([
+////                        'success' => true,
+////                        'message' => 'Sukses update pembayaran!',
+////                    ]);
+////            } else {
+////                return response()
+////                    ->json([
+////                        'success' => false,
+////                        'message' => 'Gagal update pembayaran! data order tidak ditemukan',
+////                    ]);
+////            }
+////
+////        } catch (\Exception $exception) {
+////            return response()
+////                ->json([
+////                    'success' => false,
+////                    'data' => $user,
+////                    'message' => 'Gagal membuat pembayaran! err : '.$exception->getMessage().'di line '.$exception->getLine(),
+////                ]);
+////        }
+//
     }
 }
