@@ -14,7 +14,7 @@ class AddFcmToadmin extends Migration
     public function up()
     {
         Schema::table('admins', function (Blueprint $table) {
-            //
+            $table->string('fcm_token')->nullable();
         });
     }
 
