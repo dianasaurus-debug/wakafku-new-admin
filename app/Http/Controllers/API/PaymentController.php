@@ -143,10 +143,11 @@ class PaymentController extends Controller
         $notification_body = json_decode($request->getContent(), true);
 
         $external_id = $notification_body['external_id'];
-        return $external_id;
+        $waqf = WaqfTransaction::where('reference_code', $external_id)->first();
+
+        return $waqf;
 //        try {
 //
-////            $waqf = WaqfTransaction::where('reference_code', $external_id)->first();
 ////            $program = Program::where('id', $waqf->program_id)->first();
 ////            $user = Waqif::where('user_id', $waqf->user_id)->first();
 ////            return $user;
