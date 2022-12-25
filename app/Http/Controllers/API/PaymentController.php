@@ -146,8 +146,10 @@ class PaymentController extends Controller
 
             $waqf = WaqfTransaction::where('reference_code', $external_id)->first();
             $program = Program::where('id', $waqf->program_id)->first();
+            $user = Waqif::where('user_id', $waqf->user_id)->first();
+            return $user;
+
             if($waqf!=null){
-                $user = Waqif::where('user_id', $waqf->user_id)->first();
                 $notif_title = 'Selesaikan pembayaran Anda';
                 $notif_desc = 'Mohon lunasi pembayaran agar dapat masuk ke dompet wakaf';
                 create_firebase_notif($user->fcm_token, $notif_title, $notif_desc);
