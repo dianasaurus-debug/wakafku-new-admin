@@ -114,7 +114,7 @@ class PaymentController extends Controller
                 $notif_title = 'Selesaikan pembayaran Anda';
                 $notif_desc = 'Mohon lunasi pembayaran agar dapat masuk ke dompet wakaf';
                 create_firebase_notif($user->fcm_token, $notif_title, $notif_desc);
-                create_notification_data($user->id, 0, $notif_title, $notif_desc);
+                create_notification_data($user->id, 'pembayaran', $notif_title, $notif_desc);
 
                 return response()
                     ->json([
@@ -152,7 +152,7 @@ class PaymentController extends Controller
                 $notif_title = 'Selesaikan pembayaran Anda';
                 $notif_desc = 'Mohon lunasi pembayaran agar dapat masuk ke dompet wakaf';
                 create_firebase_notif($user->fcm_token, $notif_title, $notif_desc);
-                create_notification_data($user->id, 0, $notif_title, $notif_desc);
+                create_notification_data($user->id, 'pembayaran', $notif_title, $notif_desc);
                 $tokens = get_all_admintokens();
                 create_mass_firebase_notif($tokens, 'Halo, ada pembayaran wakaf masuk', 'Dana sebesar '.$waqf->amount.' telah masuk ke program '.$program->title);
                 $waqf->update(['status'=> 1]);
