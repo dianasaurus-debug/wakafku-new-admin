@@ -144,8 +144,9 @@ class PaymentController extends Controller
 
         $external_id = $notification_body['external_id'];
         $waqf = WaqfTransaction::where('reference_code', $external_id)->first();
+        $user = Waqif::where('user_id', $waqf->user_id)->first();
 
-        return $waqf;
+        return $user;
 //        try {
 //
 ////            $program = Program::where('id', $waqf->program_id)->first();
