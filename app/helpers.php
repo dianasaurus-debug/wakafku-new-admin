@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Xendit\Xendit;
 
 if (!function_exists('create_firebase_notif')) {
     function create_firebase_notif($fcm_token, $title, $text)
@@ -100,7 +102,6 @@ if (!function_exists('get_all_admintokens')) {
         return $tokens;
     }
 }
-
 if (!function_exists('create_short_link')) {
     function create_short_link($link)
     {
@@ -147,7 +148,6 @@ if (!function_exists('create_short_link')) {
         }
     }
 }
-
 if (!function_exists('create_notification_data')) {
     function create_notification_data($user, $jenis, $title, $text)
     {
@@ -159,3 +159,70 @@ if (!function_exists('create_notification_data')) {
         ]);
     }
 }
+if (!function_exists('make_retail_payment')) {
+    function make_retail_payment($retail, $nominal)
+    {
+        $secret = env('XENDIT_API_KEY');
+        Xendit::setApiKey($secret);
+
+        $body = [
+            "external_id" => 'wakafku-retail-' . time(),
+            "retail_outlet_name" => $retail,
+            "name" => Auth::user()->name,
+            "expected_amount" => $nominal
+        ];
+        $createRetail = \Xendit\Retail::create($body);
+
+        return $createRetail;
+    }
+}
+if (!function_exists('make_bank_payment')) {
+    function make_bank_payment($channel, $nominal)
+    {
+        $secret = env('XENDIT_API_KEY');
+        Xendit::setApiKey($secret);
+
+        $body = [
+            "external_id" => 'wakafku-va-' . time(),
+            "bank_code" => strtoupper($channel),
+            "name" => Auth::user()->name,
+            "expected_amount" => $nominal,
+            "is_closed" => true
+        ];
+        $createVA = \Xendit\VirtualAccounts::create($body);
+
+        return $createVA;
+    }
+}
+if (!function_exists('make_ewallet_payment')) {
+    function make_ewallet_payment($channel_property, $channel_code, $nominal, $ref_id)
+    {
+        $secret = env('XENDIT_API_KEY');
+        Xendit::setApiKey($secret);
+        $channel_properties = [
+            'ID_OVO' => 'mobile_number',
+            'ID_SHOPEEPAY' => 'success_redirect_url',
+            'ID_DANA' => 'success_redirect_url',
+            'ID_LINKAJA' => 'success_redirect_url',
+        ];
+
+        $body = [
+            "reference_id" => $ref_id,
+            "currency" => "IDR",
+            "amount" => $nominal,
+            "checkout_method" => "ONE_TIME_PAYMENT",
+            "channel_code" => $channel_code,
+            "channel_properties" => [
+                $channel_properties[$channel_code] => $channel_property
+            ],
+            "metadata" => [
+                "branch_area" => "PLUIT",
+                "branch_city" => "JAKARTA"
+            ]
+        ];
+        $ewalletData = \Xendit\EWallets::createEWalletCharge($body);
+
+        return $ewalletData;
+    }
+}
+
