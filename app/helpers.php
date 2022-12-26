@@ -171,6 +171,7 @@ if (!function_exists('make_retail_payment')) {
             "name" => 'Diana',
             "expected_amount" => $nominal
         ];
+        return $body;
         $createRetail = \Xendit\Retail::create($body);
 
         return $createRetail;

@@ -20,6 +20,7 @@ class PaymentController extends Controller
 {
     public function create_transaction(Request $request){
         try {
+
             $wakif = Waqif::where('user_id', Auth::id())->with('user')->first();
             $payment_method_data = PaymentMethod::where('label', $request->channel)->first();
             if ($payment_method_data->kind == 'va') {
@@ -27,6 +28,7 @@ class PaymentController extends Controller
             } else if ($payment_method_data->kind == 'retail') {
                 $createVA = make_retail_payment($payment_method_data->label, $request->nominal);
             }
+            return $createVA;
             if($createVA){
                 $transaction = WaqfTransaction::create([
                     'payment_due' => Carbon::parse(Carbon::now())->addHours(12),
