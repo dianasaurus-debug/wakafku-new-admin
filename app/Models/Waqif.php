@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Xendit\Transaction;
 
 class Waqif extends Model
 {
@@ -33,5 +34,9 @@ class Waqif extends Model
     public function routeNotificationForMail($notification)
     {
         return $this->user->email;
+    }
+    public function transactions()
+    {
+        return $this->hasMany(WaqfTransaction::class, 'waqif_id', 'id');
     }
 }

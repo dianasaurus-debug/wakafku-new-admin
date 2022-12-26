@@ -363,4 +363,35 @@ class AuthController extends Controller
                 ]);
         }
     }
+
+    public function profile_detail(Request $request){
+        if(!auth()){
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'Unauthorized',
+                ]);
+        }
+        try {
+            $waqif = Waqif::where('user_id', auth()->user()->id)
+                ->with('user')
+                ->withCount(['transactions' => function($query) {
+                    $query->whereIn('status', [1, 2, 3]);
+                }])
+                ->first();
+            return response()
+                ->json([
+                    'success' => true,
+                    'message' => 'Berhasil menampilkan profil!',
+                    'data' => $waqif
+                ]);
+        } catch (\Exception $e){
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'Gagal menampilkan profil! Error : '.$e->getMessage(),
+                ]);
+        }
+    }
+
 }

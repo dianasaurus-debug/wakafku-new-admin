@@ -31,6 +31,7 @@ Route::prefix('payment')->group(static function(){
 });
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/profile', [APIAuthController::class, 'profile']);
+    Route::get('/profile-detail', [APIAuthController::class, 'profile_detail']);
     Route::get('/logout', [APIAuthController::class, 'logout']);
     Route::prefix('payment')->group(static function(){
         Route::post('/create', [APIPaymentController::class, 'create_transaction']);
