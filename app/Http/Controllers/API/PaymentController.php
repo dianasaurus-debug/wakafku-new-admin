@@ -19,7 +19,7 @@ use Xendit\Xendit;
 class PaymentController extends Controller
 {
     public function create_transaction(Request $request){
-        try {
+//        try {
             $wakif = Waqif::where('user_id', Auth::id())->with('user')->first();
             $payment_method_data = PaymentMethod::where('label', $request->channel)->first();
             if ($payment_method_data->kind == 'va') {
@@ -67,13 +67,13 @@ class PaymentController extends Controller
                     ]);
             }
 
-        } catch (\Exception $exception){
-            return response()
-                ->json([
-                    'success' => false,
-                    'message' => 'Terjadi kesalahan message : '.$exception->getMessage().' di line '.$exception->getLine(),
-                ]);
-        }
+//        } catch (\Exception $exception){
+//            return response()
+//                ->json([
+//                    'success' => false,
+//                    'message' => 'Terjadi kesalahan message : '.$exception->getMessage().' di line '.$exception->getLine(),
+//                ]);
+//        }
 
     }
     public function bank_list(Request $request){
