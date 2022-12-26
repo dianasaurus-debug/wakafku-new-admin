@@ -40,6 +40,8 @@ return [
         'retail' => 'external_id',
         'paylater' => 'reference_id'
     ],
+    'FCM_URL_TEST' => 'https://wakafku.page.link',
+    'FCM_PKG_TEST' => 'com.example.final_project_mobile',
     'LOGIN' => [
         'GUEST' => 0,
         'ADMIN' => 1,

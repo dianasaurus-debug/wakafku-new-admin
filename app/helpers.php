@@ -106,9 +106,9 @@ if (!function_exists('create_short_link')) {
     function create_short_link($link)
     {
 
-        $API_KEY = App::environment(['local', 'staging']) == true ? env('FCM_API_TEST') : env('FCM_API_PROD');;
-        $app_package = App::environment(['local', 'staging']) == true ? config('__constant.FCM_PKG_TEST') : config('__constant.FCM_PKG_PROD');
-        $intended_link = App::environment(['local', 'staging']) == true ? config('__constant.FCM_URL_TEST') : config('__constant.FCM_URL_PROD');
+        $API_KEY = env('FCM_API_KEY');
+        $app_package = config('__constant.FCM_PKG_TEST');
+        $intended_link = config('__constant.FCM_URL_TEST');
 
         $url = 'https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=' . $API_KEY;
         $data = [
