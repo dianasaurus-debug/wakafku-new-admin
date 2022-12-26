@@ -166,10 +166,10 @@ if (!function_exists('make_retail_payment')) {
         Xendit::setApiKey($secret);
 
         $body = [
-            "external_id" => 'wakafku-retail-' . time(),
-            "retail_outlet_name" => $retail,
-            "name" => Auth::user()->name,
-            "expected_amount" => $nominal
+            'external_id' => 'TEST-'.time(),
+            'retail_outlet_name' => 'ALFAMART',
+            'name' => 'JOHN DOE',
+            'expected_amount' => 25000
         ];
         $createRetail = \Xendit\Retail::create($body);
 
