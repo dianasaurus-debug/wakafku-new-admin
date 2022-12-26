@@ -71,7 +71,7 @@ class PaymentController extends Controller
             return response()
                 ->json([
                     'success' => false,
-                    'message' => 'Terjadi kesalahan message : '.$exception->getMessage(),
+                    'message' => 'Terjadi kesalahan message : '.$exception->getMessage().' di line '.$exception->getLine(),
                 ]);
         }
 
