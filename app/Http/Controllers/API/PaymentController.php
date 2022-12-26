@@ -26,9 +26,8 @@ class PaymentController extends Controller
             if ($payment_method_data->kind == 'va') {
                 $createVA = make_bank_payment($payment_method_data->label, $request->nominal);
             } else if ($payment_method_data->kind == 'retail') {
-                $createVA = make_retail_payment($payment_method_data->label, $request->nominal);
+                $createVA = make_retail_payment($payment_method_data->label, intval($request->nominal));
             }
-            return $createVA;
             if($createVA){
                 $transaction = WaqfTransaction::create([
                     'payment_due' => Carbon::parse(Carbon::now())->addHours(12),

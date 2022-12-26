@@ -168,10 +168,9 @@ if (!function_exists('make_retail_payment')) {
         $body = [
             "external_id" => 'wakafku-retail-' . time(),
             "retail_outlet_name" => $retail,
-            "name" => 'Diana',
+            "name" => Auth::user()->name,
             "expected_amount" => $nominal
         ];
-        return $body;
         $createRetail = \Xendit\Retail::create($body);
 
         return $createRetail;
