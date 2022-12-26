@@ -86,13 +86,27 @@ class PaymentController extends Controller
     }
     public function bank_list(Request $request){
         try {
-            $all_methods = PaymentMethod::where('is_activated', true)
+            $ewallet = DB::table('payment_methods')
+                ->where('is_activated', true)
+                ->where('kind', 'ewallet')
+                ->get();
+            $va = DB::table('payment_methods')
+                ->where('is_activated', true)
+                ->where('kind', 'va')
+                ->get();
+            $retail = DB::table('payment_methods')
+                ->where('is_activated', true)
+                ->where('kind', 'retail')
                 ->get();
             return response()
                 ->json([
                     'success' => true,
-                    'data' => $all_methods,
-                    'message' => 'Berhasil menampilkan data metode pembayaran!'
+                    'data' => [
+                        'ewallet' => $ewallet,
+                        'va' => $va,
+                        'retail' => $retail,
+                    ],
+                    'message' => 'Berhasil menampilkan data bank!'
                 ]);
         } catch (\Exception $e) {
             return response()
