@@ -35,5 +35,29 @@ class TransactionController extends Controller
             return response()->json($data);
         }
     }
+    public function transaction_detail(Request $request, $id)
+    {
+        try {
+            $transaction = WaqfTransaction::with('payment_method')
+                ->where('id', $id)
+                ->with('program')
+                ->orderBy('created_at')
+                ->get();
+            $data = array(
+                'status' => 'success',
+                'message' => 'Berhasil menampilkan data transaksi',
+                'data' => $transaction,
+            );
+            return response()->json($data);
+        } catch (\Exception $exception) {
+            $data = array(
+                [
+                    'status' => 'error',
+                    'message' => 'Terjadi kesalahan : ' . $exception->getMessage()
+                ]
+            );
+            return response()->json($data);
+        }
+    }
 
 }
