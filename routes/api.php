@@ -39,6 +39,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/all', [APITransactionController::class, 'all_transactions']);
     });
     Route::put('/change/password', [APIAuthController::class, 'change_password']);
+    Route::prefix('notification')->name('notification.')->group(static function () {
+        Route::get('all', 'App\Http\Controllers\API\NotificationController@all_notifications');
+    });
 });
 Route::get('/payment-methods', [APIPaymentController::class, 'bank_list']);
 
