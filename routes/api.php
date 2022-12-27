@@ -28,6 +28,8 @@ Route::get('programs', [ProgramController::class, 'all_programs']);
 Route::prefix('payment')->group(static function(){
     Route::post('/webhook/va/created', [APIPaymentController::class, 'get_va_created']);
     Route::post('/webhook/va/status', [APIPaymentController::class, 'get_va_response']);
+    Route::post('/webhook/ewallet/status', [APIPaymentController::class, 'get_ewallet_response']);
+
 });
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/profile', [APIAuthController::class, 'profile']);
