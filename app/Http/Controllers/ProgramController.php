@@ -147,7 +147,6 @@ class ProgramController extends Controller
                 'created_by' => Auth::user()->name,
                 'created_by_role' => 'Admin',
                 'terkumpul' => isset($request->terkumpul) ? $request->terkumpul : 0,
-                'cover' => $request->file('cover') ? $request->file('cover')->store('covers') : null,
             ]);
 
             if ($request->file('cover')) {
