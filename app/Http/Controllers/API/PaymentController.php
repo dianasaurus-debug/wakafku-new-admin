@@ -220,4 +220,49 @@ class PaymentController extends Controller
         }
 
     }
+    public function get_ewallet_response(Request $request)
+    {
+        $notification_body = json_decode($request->getContent(), true);
+
+        $external_id = $notification_body['external_id'];
+        $waqf = WaqfTransaction::where('reference_code', $external_id)->first();
+        try {
+
+            $program = Program::where('id', $waqf->program_id)->first();
+            $user = Waqif::where('id', $waqf->waqif_id)->first();
+            if ($waqf != null) {
+                $notif_title = 'Pembayaran Anda sudah lunas';
+                $notif_desc = 'Terima kasih pembayaran Anda sudah masuk ke dompet wakaf';
+                create_firebase_notif($user->fcm_token, $notif_title, $notif_desc);
+                create_notification_data($user->id, 'pembayaran', $notif_title, $notif_desc);
+                $tokens = get_all_admintokens();
+                create_mass_firebase_notif($tokens, 'Halo, ada pembayaran wakaf masuk', 'Dana sebesar ' . $waqf->amount . ' telah masuk ke program ' . $program->title);
+                $waqf->update(['status' => 1]);
+                $waqf->update(['paid_at' => Carbon::now()]);
+                $program->update(['terkumpul' => $program->terkumpul + $waqf->amount]);
+                return response()
+                    ->json([
+                        'success' => true,
+                        'message' => 'Sukses update pembayaran!',
+                    ]);
+            } else {
+                return response()
+                    ->json([
+                        'success' => false,
+                        'message' => 'Gagal update pembayaran! data order tidak ditemukan',
+                    ]);
+            }
+
+        } catch (\Exception $exception) {
+            return response()
+                ->json([
+                    'success' => false,
+                    'data' => $user,
+                    'message' => 'Gagal membuat pembayaran! err : ' . $exception->getMessage() . 'di line ' . $exception->getLine(),
+                ]);
+        }
+
+    }
+
+
 }
