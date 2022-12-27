@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 
@@ -81,9 +82,9 @@ class ProgramController extends Controller
                 'cover' => $request->file('cover') ? $request->file('cover')->store('covers') : null,
             ]);
 
-            return redirect()->route('programs.index')->with('success', 'Produk berhasil ditambahkan!');
+            return redirect()->route('programs.index')->with('success', 'Program berhasil ditambahkan!');
         } catch (\Exception $e) {
-            return redirect()->route('programs.index')->with('error', 'Produk gagal ditambahkan! Error : ' . $e->getMessage());
+            return redirect()->route('programs.index')->with('error', 'Program gagal ditambahkan! Error : ' . $e->getMessage().' line '.$e->getLine());
         }
     }
 
@@ -106,7 +107,15 @@ class ProgramController extends Controller
      */
     public function edit($id)
     {
-        //
+        $selected_program = Program::with('category')
+            ->where('id', $id)
+            ->with('address')
+            ->first();
+        $categories = Category::all();
+        return Inertia::render('Programs/Edit', [
+            'program' => $selected_program,
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -118,7 +127,40 @@ class ProgramController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $request->validate([
+                'title' => 'required',
+                'desc' => 'required|string',
+                'address_detail' => 'required',
+                'category_id' => 'required',
+                'address_id' => 'required',
+            ]);
+            $program = Program::where('id', $id)->first();
+            $program->update([
+                'title' => $request->title,
+                'desc' => $request->desc,
+                'address_detail' => $request->address_detail,
+                'latitude' => $request->location['position']['lat'],
+                'longitude' => $request->location['position']['lng'],
+                'category_id' => $request->category_id,
+                'address_id' => $request->address_id,
+                'created_by' => Auth::user()->name,
+                'created_by_role' => 'Admin',
+                'terkumpul' => isset($request->terkumpul) ? $request->terkumpul : 0,
+                'cover' => $request->file('cover') ? $request->file('cover')->store('covers') : null,
+            ]);
+
+            if ($request->file('cover')) {
+                $storagePath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix();
+                if (file_exists($storagePath.$program->cover)) unlink($storagePath.$program->cover);
+                $program->update(['cover' => $request->file('cover')->store('covers')]);
+            }
+
+            return redirect()->route('programs.index')->with('success', 'Program berhasil diupdate!');
+        } catch (\Exception $e) {
+            return redirect()->route('programs.index')->with('error', 'Program gagal diupdate! Error : ' . $e->getMessage().' line '.$e->getLine());
+        }
+
     }
 
     /**

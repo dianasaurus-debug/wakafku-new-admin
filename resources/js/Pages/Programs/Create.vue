@@ -8,7 +8,7 @@
     <div class="bg-white rounded-md shadow overflow-hidden py-5 px-5">
       <form @submit.prevent="store">
         <div class="flex flex-wrap">
-          <text-input v-model="form.name" :error="form.errors.name" class="pr-6 w-full lg:w-1/2" label="Nama"/>
+          <text-input v-model="form.title" :error="form.errors.title" class="pr-6 w-full lg:w-1/2" label="Judul"/>
           <select-input v-model="form.category_id" :error="form.errors.category_id" class="pr-6 w-full lg:w-1/2"
                         label="Kategori">
             <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>

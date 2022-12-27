@@ -19,6 +19,12 @@
       </Link>
     </div>
     <div class="mb-4">
+      <Link class="group flex items-center py-3" href="/transactions">
+        <icon name="office" class="mr-2 w-4 h-4" :class="isUrl('transactions') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
+        <div :class="isUrl('transactions') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">Pembayaran</div>
+      </Link>
+    </div>
+    <div class="mb-4">
       <Link class="group flex items-center py-3" href="/users">
         <icon name="users" class="mr-2 w-4 h-4" :class="isUrl('users') ? 'fill-white' : 'fill-indigo-400 group-hover:fill-white'" />
         <div :class="isUrl('users') ? 'text-white' : 'text-indigo-300 group-hover:text-white'">User</div>
