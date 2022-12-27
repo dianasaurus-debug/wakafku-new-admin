@@ -59,7 +59,8 @@ class PaymentController extends Controller
             if ($payment_method_data->kind == 'ewallet') {
                 $ref_id = 'wakafku-ewallet-'.time().$transaction_data->id;
                 $intended_link = config('__constant.FCM_URL_TEST');
-                $phone_number = isset($request->phone_number) ? $request->phone_number : Auth::user()->phone;
+                return $intended_link . '/payment?id=' . $transaction_data->id . '&is_failed=false';
+                $phone_number = isset($request->phone_number) ? $request->phone_number : $wakif->phone;
                 $short_url = create_short_link($intended_link . '/payment?id=' . $transaction_data->id . '&is_failed=false');
                 $channel_property = $request->channel == 'ID_OVO' ? $phone_number : $short_url;
                 $object_va = make_ewallet_payment($channel_property, $request->channel, $request->nominal, $ref_id);
