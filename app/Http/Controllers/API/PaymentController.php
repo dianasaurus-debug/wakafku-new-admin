@@ -75,7 +75,7 @@ class PaymentController extends Controller
                     }
                 }
                 $transaction_data->update(['reference_code' => $object_va[config('__constant.EXTERNAL_IDS')[$payment_method_data->kind]] ]);
-                $transaction_data->update(['payment_code' => $object_va[config('__constant.PAYMENT_CODES')[$payment_method_data->kind]] ]);
+                $transaction_data->update(['payment_code' => $object_va[config('__constant.PAYMENT_CODES')[$payment_method_data->kind]].time().$transaction_data->id ]);
 
             } else {
                 return response()
