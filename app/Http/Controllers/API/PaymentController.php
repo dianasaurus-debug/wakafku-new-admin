@@ -74,8 +74,8 @@ class PaymentController extends Controller
                         $payment_link = $object_va['actions']['mobile_web_checkout_url'];
                     }
                 }
-                $transaction_data->update(['reference_code' => $createVA[config('__constant.EXTERNAL_IDS')[$payment_method_data->kind]] ]);
-                $transaction_data->update(['payment_code' => $createVA[config('__constant.PAYMENT_CODES')[$payment_method_data->kind]] ]);
+                $transaction_data->update(['reference_code' => $object_va[config('__constant.EXTERNAL_IDS')[$payment_method_data->kind]] ]);
+                $transaction_data->update(['payment_code' => $object_va[config('__constant.PAYMENT_CODES')[$payment_method_data->kind]] ]);
 
             } else {
                 return response()
