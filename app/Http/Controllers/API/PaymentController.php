@@ -227,10 +227,9 @@ class PaymentController extends Controller
         $external_id = $notification_body['data']['reference_id'];
         $waqf = WaqfTransaction::where('reference_code', $external_id)->first();
         try {
-
-            $program = Program::where('id', $waqf->program_id)->first();
-            $user = Waqif::where('id', $waqf->waqif_id)->first();
             if ($waqf != null) {
+                $program = Program::where('id', $waqf->program_id)->first();
+                $user = Waqif::where('id', $waqf->waqif_id)->first();
                 $notif_title = 'Pembayaran Anda sudah lunas';
                 $notif_desc = 'Terima kasih pembayaran Anda sudah masuk ke dompet wakaf';
                 create_firebase_notif($user->fcm_token, $notif_title, $notif_desc);
@@ -257,7 +256,6 @@ class PaymentController extends Controller
             return response()
                 ->json([
                     'success' => false,
-                    'data' => $user,
                     'message' => 'Gagal membuat pembayaran! err : ' . $exception->getMessage() . 'di line ' . $exception->getLine(),
                 ]);
         }
