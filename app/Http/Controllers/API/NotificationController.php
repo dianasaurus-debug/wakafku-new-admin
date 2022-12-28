@@ -15,7 +15,7 @@ class NotificationController extends Controller
     {
         try {
             $user = Waqif::where('user_id', Auth::id())->first();
-            $all_notifications = Notification::where('user_id', $user->id)->get();
+            $all_notifications = Notification::where('user_id', $user->id)->latest();
             $data = array(
                 'status' => 'success',
                 'message' => 'Berhasil menampilkan data transaksi',
