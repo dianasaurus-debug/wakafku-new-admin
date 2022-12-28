@@ -71,7 +71,10 @@
             <text-input v-model="form.location.position.lng" aria-readonly="true"  class="w-full" label="Longitude"/>
           </div>
         </div>
-        <div class="flex items-center justify-end px-8 py-4 bg-gray-50 border-t border-gray-100">
+        <div class="flex items-center justify-between px-8 py-4 bg-gray-50 border-t border-gray-100">
+          <div>
+            <a class="btn-indigo" :href="'/reports?program_id='+program.id">Laporan</a>
+          </div>
           <loading-button :loading="form.processing" class="btn-indigo" type="submit">Simpan Program</loading-button>
         </div>
       </form>

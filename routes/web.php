@@ -8,6 +8,7 @@ use App\Http\Controllers\ProgramController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\TransactionController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ReportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,6 +50,7 @@ Route::middleware('auth')->group(static function(){
     });
     Route::resource('programs', ProgramController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('reports', ReportController::class);
 
 
 });
