@@ -13,6 +13,7 @@
                         label="Kategori">
             <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
           </select-input>
+          <text-input v-model="form.target" :error="form.errors.target" class="pr-6 w-full lg:w-1/2" label="Target Dana (Rp)"/>
         </div>
         <div class="p-4 max-h-150">
           <h4 class="mb-2 font-bold">Deskripsi</h4>
@@ -175,6 +176,7 @@ export default {
             lng: this.program.longitude,
           }
         },
+        target : this.program.target,
         cover: null,
         terkumpul: this.program.terkumpul,
         category_id: this.program.category_id,

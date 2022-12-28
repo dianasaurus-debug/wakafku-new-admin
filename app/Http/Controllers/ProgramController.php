@@ -71,6 +71,7 @@ class ProgramController extends Controller
             $program = Program::create([
                 'title' => $request->title,
                 'desc' => $request->desc,
+                'target' => $request->target,
                 'address_detail' => $request->address_detail,
                 'latitude' => $request->location['position']['lat'],
                 'longitude' => $request->location['position']['lng'],
@@ -139,6 +140,7 @@ class ProgramController extends Controller
             $program->update([
                 'title' => $request->title,
                 'desc' => $request->desc,
+                'target' => $request->target,
                 'address_detail' => $request->address_detail,
                 'latitude' => $request->location['position']['lat'],
                 'longitude' => $request->location['position']['lng'],
