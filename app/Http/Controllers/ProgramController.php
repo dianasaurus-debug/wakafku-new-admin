@@ -59,14 +59,14 @@ class ProgramController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->validate([
-                'title' => 'required',
-                'desc' => 'required|string',
-                'address_detail' => 'required',
-                'cover' => 'required|image',
-                'category_id' => 'required',
-                'address_id' => 'required',
-            ]);
+//            $request->validate([
+//                'title' => 'required',
+//                'desc' => 'required|string',
+//                'address_detail' => 'required',
+//                'cover' => 'required|image',
+//                'category_id' => 'required',
+//                'address_id' => 'required',
+//            ]);
 
             $program = Program::create([
                 'title' => $request->title,
