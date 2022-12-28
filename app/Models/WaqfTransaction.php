@@ -16,4 +16,12 @@ class WaqfTransaction extends Model
     {
         return $this->belongsTo(Program::class, 'program_id', 'id');
     }
+    public function waqif()
+    {
+        return $this->belongsTo(Waqif::class, 'waqif_id', 'id')->with('user');
+    }
+    public function berjangka_data()
+    {
+        return $this->hasOne(WaqfReturn::class, 'waqf_id', 'id');
+    }
 }
