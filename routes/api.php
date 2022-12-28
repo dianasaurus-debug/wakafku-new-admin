@@ -25,6 +25,8 @@ Route::get('/districts' ,[WilayahController::class, 'getDistricts']);
 Route::get('/villages', [WilayahController::class,'getVillages']);
 Route::get('/postalcodes', [WilayahController::class, 'getPostalcodes']);
 Route::get('programs', [ProgramController::class, 'all_programs']);
+Route::get('programs/category/{id}', [ProgramController::class, 'all_programs_by_category']);
+
 Route::prefix('payment')->group(static function(){
     Route::post('/webhook/va/created', [APIPaymentController::class, 'get_va_created']);
     Route::post('/webhook/va/status', [APIPaymentController::class, 'get_va_response']);

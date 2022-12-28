@@ -59,18 +59,19 @@ class ProgramController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->validate([
-                'title' => 'required',
-                'desc' => 'required|string',
-                'address_detail' => 'required',
-                'cover' => 'required|image',
-                'category_id' => 'required',
-                'address_id' => 'required',
-            ]);
+//            $request->validate([
+//                'title' => 'required',
+//                'desc' => 'required|string',
+//                'address_detail' => 'required',
+//                'cover' => 'required|image',
+//                'category_id' => 'required',
+//                'address_id' => 'required',
+//            ]);
 
             $program = Program::create([
                 'title' => $request->title,
                 'desc' => $request->desc,
+                'target' => $request->target,
                 'address_detail' => $request->address_detail,
                 'latitude' => $request->location['position']['lat'],
                 'longitude' => $request->location['position']['lng'],
@@ -139,6 +140,7 @@ class ProgramController extends Controller
             $program->update([
                 'title' => $request->title,
                 'desc' => $request->desc,
+                'target' => $request->target,
                 'address_detail' => $request->address_detail,
                 'latitude' => $request->location['position']['lat'],
                 'longitude' => $request->location['position']['lng'],

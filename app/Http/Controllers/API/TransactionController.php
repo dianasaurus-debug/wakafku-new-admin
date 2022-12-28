@@ -42,7 +42,7 @@ class TransactionController extends Controller
                 ->where('id', $id)
                 ->with('program')
                 ->orderBy('created_at')
-                ->get();
+                ->first();
             $data = array(
                 'status' => 'success',
                 'message' => 'Berhasil menampilkan data transaksi',
