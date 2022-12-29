@@ -4,6 +4,7 @@ import { InertiaProgress } from '@inertiajs/progress'
 import { createInertiaApp } from '@inertiajs/inertia-vue'
 import "leaflet/dist/leaflet.css";
 import "leaflet-geosearch/dist/geosearch.css";
+import 'tw-elements';
 
 Vue.config.productionTip = false
 Vue.use(PortalVue)

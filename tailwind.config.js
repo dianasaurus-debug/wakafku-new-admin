@@ -48,5 +48,7 @@ module.exports = {
       fill: ['focus', 'group-hover'],
     },
   },
-  plugins: [],
+  plugins: [
+      require('tw-elements/dist/plugin')
+  ],
 }
