@@ -20,6 +20,16 @@ class TransactionController extends Controller
         'all_transactions' => $all_transactions,
     ]);
     }
+    public function transaction_detail(Request $request, $id)
+    {
+        $transaction = WaqfTransaction::with('payment_method')
+            ->with('program')
+            ->with('waqif')
+            ->first();
+        return Inertia::render('Transactions/Detail', [
+            'transaction' => $transaction,
+        ]);
+    }
 
 
 }

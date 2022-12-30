@@ -47,6 +47,8 @@ Route::middleware('auth')->group(static function(){
     });
     Route::prefix('transactions')->name('users.')->group(static function(){
         Route::get('/', [TransactionController::class, 'all_transactions']);
+        Route::get('/detail/{id}', [TransactionController::class, 'transaction_detail']);
+
     });
     Route::resource('programs', ProgramController::class);
     Route::resource('categories', CategoryController::class);

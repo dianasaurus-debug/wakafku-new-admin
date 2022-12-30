@@ -9,4 +9,8 @@ class Report extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    public function program()
+    {
+        return $this->belongsTo(Program::class, 'program_id', 'id');
+    }
 }
