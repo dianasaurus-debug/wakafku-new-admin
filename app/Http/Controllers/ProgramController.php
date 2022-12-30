@@ -137,6 +137,10 @@ class ProgramController extends Controller
                 'address_id' => 'required',
             ]);
             $program = Program::where('id', $id)->first();
+            $precentage = 0;
+            if($request->target!=0){
+                $precentage = $request->terkumpul != 0 ? ($program->terkumpul/$request->target) * 100 : 0;
+            }
             $program->update([
                 'title' => $request->title,
                 'desc' => $request->desc,
@@ -147,6 +151,7 @@ class ProgramController extends Controller
                 'category_id' => $request->category_id,
                 'address_id' => $request->address_id,
                 'created_by' => Auth::user()->name,
+                'percentage' => $precentage,
                 'created_by_role' => 'Admin',
                 'terkumpul' => isset($request->terkumpul) ? $request->terkumpul : 0,
             ]);
