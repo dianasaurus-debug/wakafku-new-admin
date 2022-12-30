@@ -67,7 +67,6 @@ class ProgramController extends Controller
 //                'category_id' => 'required',
 //                'address_id' => 'required',
 //            ]);
-
             $program = Program::create([
                 'title' => $request->title,
                 'desc' => $request->desc,
@@ -77,6 +76,7 @@ class ProgramController extends Controller
                 'longitude' => $request->location['position']['lng'],
                 'category_id' => $request->category_id,
                 'address_id' => $request->address_id,
+                'percentage' => 0,
                 'created_by' => Auth::user()->name,
                 'created_by_role' => 'Admin',
                 'terkumpul' => isset($request->terkumpul) ? $request->terkumpul : 0,
