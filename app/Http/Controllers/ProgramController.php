@@ -139,7 +139,7 @@ class ProgramController extends Controller
             $program = Program::where('id', $id)->first();
             $precentage = 0;
             if($request->target!=0){
-                $precentage = $request->terkumpul != 0 ? ($program->terkumpul/$request->target) * 100 : 0;
+                $precentage = $program->terkumpul != 0 ? ($program->terkumpul/$request->target) * 100 : 0;
             }
             $program->update([
                 'title' => $request->title,

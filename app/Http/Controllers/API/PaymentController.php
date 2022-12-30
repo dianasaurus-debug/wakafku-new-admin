@@ -197,6 +197,11 @@ class PaymentController extends Controller
                 $waqf->update(['status' => 1]);
                 $waqf->update(['paid_at' => Carbon::now()]);
                 $program->update(['terkumpul' => $program->terkumpul + $waqf->amount]);
+                $precentage = 0;
+                if($program->target!=0){
+                    $precentage = $program->terkumpul != 0 ? ($program->terkumpul/$program->target) * 100 : 0;
+                }
+                $program->update(['percentage' => $precentage]);
                 return response()
                     ->json([
                         'success' => true,
@@ -239,6 +244,11 @@ class PaymentController extends Controller
                 $waqf->update(['status' => 1]);
                 $waqf->update(['paid_at' => Carbon::now()]);
                 $program->update(['terkumpul' => $program->terkumpul + $waqf->amount]);
+                $precentage = 0;
+                if($program->target!=0){
+                    $precentage = $program->terkumpul != 0 ? ($program->terkumpul/$program->target) * 100 : 0;
+                }
+                $program->update(['percentage' => $precentage]);
                 return response()
                     ->json([
                         'success' => true,
