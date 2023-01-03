@@ -24,6 +24,7 @@
           <th class="pb-4 pt-6 px-6">Terkumpul</th>
           <th class="pb-4 pt-6 px-6">Kategori</th>
           <th class="pb-4 pt-6 px-6">Kota</th>
+          <th class="pb-4 pt-6 px-6">Status</th>
           <th class="pb-4 pt-6 px-6">Alamat</th>
         </tr>
         <tr v-for="program in programs" :key="program.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
@@ -45,6 +46,11 @@
           <td class="border-t">
             <Link class="flex items-center px-6 py-4" :href="`/programs/${program.id}/edit`" tabindex="-1">
               {{ program.address.kabupaten }}
+            </Link>
+          </td>
+          <td class="border-t">
+            <Link class="flex items-center px-6 py-4" :href="`/programs/${program.id}/edit`" tabindex="-1">
+              {{ status[program.status] }}
             </Link>
           </td>
           <td class="border-t">
@@ -86,6 +92,7 @@ export default {
   props: {
     filters: Object,
     programs: Array,
+    organization: Object
   },
   data() {
     return {
@@ -93,6 +100,11 @@ export default {
         search: this.filters.search,
         // category_id: this.filters.category_id,
       },
+      status : {
+        'waiting' : 'Menunggu',
+        'approved' : 'Disetujui',
+        'rejected' : 'Ditolak'
+      }
     }
   },
   watch: {

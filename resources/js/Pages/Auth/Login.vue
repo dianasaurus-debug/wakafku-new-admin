@@ -2,6 +2,7 @@
   <div class="flex items-center justify-center p-6 min-h-screen bg-indigo-800">
     <Head title="Login" />
     <div class="w-full max-w-md">
+      <flash-messages />
       <logo class="block mx-auto w-full max-w-xs fill-white" height="50" />
       <form class="mt-8 bg-white rounded-lg shadow-xl overflow-hidden" @submit.prevent="login">
         <div class="px-10 py-12">
@@ -27,6 +28,7 @@ import { Head } from '@inertiajs/inertia-vue'
 import Logo from '@/Shared/Logo'
 import TextInput from '@/Shared/TextInput'
 import LoadingButton from '@/Shared/LoadingButton'
+import FlashMessages from '@/Shared/FlashMessages'
 
 export default {
   components: {
@@ -34,6 +36,7 @@ export default {
     LoadingButton,
     Logo,
     TextInput,
+    FlashMessages
   },
   data() {
     return {

@@ -70,7 +70,7 @@ class ReportController extends Controller
 
             return redirect()->to('reports?program_id='.$request->program_id)->with('success', 'Report berhasil ditambahkan!');
         } catch (\Exception $e) {
-            return redirect()->route('reports?program_id='.$request->program_id)->with('error', 'Report gagal ditambahkan! Error : ' . $e->getMessage().' line '.$e->getLine());
+            return redirect()->to('reports?program_id='.$request->program_id)->with('error', 'Report gagal ditambahkan! Error : ' . $e->getMessage().' line '.$e->getLine());
         }
     }
 

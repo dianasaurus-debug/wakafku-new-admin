@@ -159,6 +159,18 @@ if (!function_exists('create_notification_data')) {
         ]);
     }
 }
+if (!function_exists('storeasfile')) {
+    function storeasfile($file, $path, $name)
+    {
+        return $file ? $file->storeAs($path, $name) : null;
+    }
+}
+if (!function_exists('storeasfile')) {
+    function storeasfile($file, $path, $name)
+    {
+        return $file ? $file->storeAs($path, $name) : null;
+    }
+}
 if (!function_exists('make_retail_payment')) {
     function make_retail_payment($retail, $nominal)
     {

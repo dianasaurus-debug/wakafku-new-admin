@@ -18,4 +18,9 @@ class Program extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class, 'organization_id', 'id')->with('user');
+    }
 }

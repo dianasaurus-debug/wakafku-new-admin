@@ -20,4 +20,9 @@ class ImagesController extends Controller
 
         return $server->getImageResponse($path, $request->all());
     }
+    public function get_pdf(Request $request, $path)
+    {
+        $real_path = storage_path('app/'.$path);
+        return response()->file($real_path);
+    }
 }

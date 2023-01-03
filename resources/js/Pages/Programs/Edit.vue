@@ -61,7 +61,29 @@
           </div>
           <TextareaInput class="pr-6 pb-4 w-full lg:w-1/2" label="Alamat Detail" v-model="form.address_detail"></TextareaInput>
         </div>
-
+        <h3 class="my-3 font-bold">Berkas Persyaratan</h3>
+        <div class="flex flex-wrap" v-if="auth.user.role_id!=1">
+          <div class="flex items-end w-full lg:w-1/2 pr-4 mb-2">
+            <file-input class="flex-1" v-model="form.surat_permohonan_wakaf" :error="form.errors.surat_permohonan_wakaf"
+                        type="file" label="Surat Permohonan Wakaf"/>
+            <button class="ml-2 btn-indigo">Lihat</button>
+          </div>
+          <div class="flex items-end w-full lg:w-1/2 pr-4 mb-2">
+            <file-input class="flex-1" v-model="form.surat_pendaftaran_wakaf" :error="form.errors.surat_pendaftaran_wakaf"
+                        type="file" label="Surat Pendaftaran Wakaf"/>
+            <button class="ml-2 btn-indigo">Lihat</button>
+          </div>
+          <div class="flex items-end w-full lg:w-1/2 pr-4 mb-2">
+            <file-input class="flex-1" v-model="form.ikrar_wakaf" :error="form.errors.ikrar_wakaf"
+                        type="file" label="Ikrar Wakaf"/>
+            <button class="ml-2 btn-indigo">Lihat</button>
+          </div>
+          <div class="flex items-end w-full lg:w-1/2 pr-4 mb-2">
+            <file-input class="flex-1" v-model="form.proposal_program" :error="form.errors.proposal_program"
+                        type="file" label="Proposal Program Wakaf"/>
+            <button class="ml-2 btn-indigo">Lihat</button>
+          </div>
+        </div>
         <h4 class="mb-2 mt-3 font-bold">Letak Koordinat Tempat Program Wakaf</h4>
         <div class="flex justify-start">
           <div class="mr-5" style="width:50%;height: 300px">
@@ -72,10 +94,20 @@
             <text-input v-model="form.location.position.lng" aria-readonly="true"  class="w-full" label="Longitude"/>
           </div>
         </div>
+
         <div class="flex items-center justify-between px-8 py-4 bg-gray-50 border-t border-gray-100">
-          <div>
-            <a class="btn-indigo" :href="'/reports?program_id='+program.id">Laporan</a>
+          <div class="flex justify-start items-center">
+            <a class="btn-indigo mr-2" v-if="program.status=='approved'" :href="'/reports?program_id='+program.id">Laporan</a>
+            <div class="font-bold py-4" v-if="program.status=='waiting'&&auth.user.role_id==1">
+              <div>
+                <button class="inline-block p-3 mr-2 bg-green-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="light" @click="approveProgram">Setujui</button>
+                <a class="inline-block p-3 mr-2 bg-red-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="light" href="/lembaga/daftar" role="button">Tolak</a>
+              </div>
+            </div>
           </div>
+
+
+
           <loading-button :loading="form.processing" class="btn-indigo" type="submit">Simpan Program</loading-button>
         </div>
       </form>
@@ -113,6 +145,7 @@ export default {
   props: {
     program: Object,
     categories: Array,
+    auth : Object
   },
   remember: 'form',
   mounted() {
@@ -178,6 +211,10 @@ export default {
         },
         target : this.program.target,
         cover: null,
+        surat_permohonan_wakaf: null,
+        surat_pendaftaran_wakaf: null,
+        ikrar_wakaf: null,
+        proposal_program: null,
         terkumpul: this.program.terkumpul,
         category_id: this.program.category_id,
         address_id: this.program.address_id,
@@ -185,6 +222,29 @@ export default {
     }
   },
   methods: {
+    approveProgram(){
+      this.$swal.fire({
+        title: 'Apakah Anda yakin ingin approve program ini?',
+        showDenyButton: false,
+        showCancelButton: true,
+        cancelButtonText: 'Batal',
+        confirmButtonText: 'Setujui',
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          axios
+            .get('/program/approve/'+this.program.id)
+            .then(response => {
+              if(response.data.success==true){
+                this.$swal.fire('Disetujui!', '', response.data.message)
+              } else {
+                this.$swal.fire('Gagal disetujui!', '', response.data.message)
+              }
+            })
+        }
+      })
+    },
+
     getUrl(){
       return window.location.host;
     },

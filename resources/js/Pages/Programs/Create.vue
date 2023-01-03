@@ -58,6 +58,19 @@
           <TextareaInput class="pr-6 pb-4 w-full lg:w-1/2" label="Alamat Detail" v-model="form.address_detail"></TextareaInput>
         </div>
 
+        <h3 class="mb-3 mt-3 font-bold">Berkas Persyaratan</h3>
+
+        <div class="flex flex-wrap" v-if="auth.user.role_id!=1">
+          <file-input v-model="form.surat_permohonan_wakaf" :error="form.errors.surat_permohonan_wakaf" class="w-full"
+                      type="file" label="Surat Permohonan Wakaf"/>
+          <file-input v-model="form.surat_pendaftaran_wakaf" :error="form.errors.surat_pendaftaran_wakaf" class="w-full"
+                      type="file" label="Surat Pendaftaran Wakaf"/>
+          <file-input v-model="form.ikrar_wakaf" :error="form.errors.ikrar_wakaf" class="w-full"
+                      type="file" label="Ikrar Wakaf"/>
+          <file-input v-model="form.proposal_program" :error="form.errors.proposal_program" class="w-full"
+                      type="file" label="Proposal Program Wakaf"/>
+        </div>
+
         <h4 class="mb-2 mt-3 font-bold">Letak Koordinat Tempat Program Wakaf</h4>
         <div class="flex justify-start">
           <div class="mr-5" style="width:50%;height: 300px">
@@ -102,12 +115,12 @@ export default {
     SelectInput,
     TextInput,
     VueEditor,
-
   },
   layout: Layout,
   remember: 'form',
   props: {
     categories: Array,
+    auth : Object
   },
   mounted() {
     this.getProvinces();
@@ -150,10 +163,15 @@ export default {
           }
         },
         target : 0,
+        surat_permohonan_wakaf: null,
+        surat_pendaftaran_wakaf: null,
+        ikrar_wakaf: null,
+        proposal_program: null,
         cover: null,
         terkumpul: '',
         category_id: '',
         address_id: '',
+
       }),
 
       key: 1
