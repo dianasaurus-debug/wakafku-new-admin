@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Program;
+use App\Models\Report;
 use Illuminate\Http\Request;
 
 class ProgramController extends Controller
@@ -130,6 +131,28 @@ class ProgramController extends Controller
                 'status' => 'success',
                 'message' => 'Berhasil menampilkan data program',
                 'data' => $all_programs,
+            );
+            return response()->json($data);
+        } catch (\Exception $exception) {
+            $data = array(
+                [
+                    'status' => 'error',
+                    'message' => 'Terjadi kesalahan : ' . $exception->getMessage()
+                ]
+            );
+            return response()->json($data);
+        }
+    }
+
+    public function get_reports(Request $request, $id)
+    {
+        try {
+            $reports = Report::where('program_id', $id)->get();
+
+            $data = array(
+                'success' => true,
+                'message' => 'Berhasil menampilkan data report',
+                'data' => $reports,
             );
             return response()->json($data);
         } catch (\Exception $exception) {

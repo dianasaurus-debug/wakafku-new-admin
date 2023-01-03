@@ -199,93 +199,10 @@
 
           <h4 class="font-bold tracking-tight mb-8">Persyaratan Berkas</h4>
           <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full flex justify-start items-end md:w-1/2 px-3 mb-6 md:mb-0">
-              <file-input v-model="form.company_profile" :error="form.errors.cover" class="flex-1"
-                          type="file" label="Profil Lembaga"/>
-              <button class="ml-2 btn-indigo">Lihat</button>
-            </div>
-            <div class="w-full flex justify-start items-end md:w-1/2 px-3 mb-6 md:mb-0">
-              <file-input v-model="form.akta_pendirian" :error="form.errors.akta_pendirian" class="flex-1"
-                          type="file" label="Akta Pendirian"/>
-              <button class="ml-2 btn-indigo">Lihat</button>
-            </div>
-
-          </div>
-          <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full flex justify-start items-end md:w-1/2 px-3 mb-6 md:mb-0">
-              <file-input v-model="form.pengesahan_kemenkumham" :error="form.errors.pengesahan_kemenkumham"
-                          class="flex-1"
-                          type="file" label="Dokumen Pengesahan Kemenkumham"/>
-              <button class="ml-2 btn-indigo">Lihat</button>
-            </div>
-            <div class="w-full flex justify-start items-end md:w-1/2 px-3 mb-6 md:mb-0">
-              <file-input v-model="form.rekomendasi_lkspwu" :error="form.errors.rekomendasi_lkspwu" class="flex-1"
-                          type="file" label="Dokumen Rekomendasi LKSPWU"/>
-              <button class="ml-2 btn-indigo">Lihat</button>
-            </div>
-          </div>
-          <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full flex justify-start items-end md:w-1/2 px-3 mb-6 md:mb-0">
-              <file-input v-model="form.npwp" :error="form.errors.npwp" class="flex-1"
-                          type="file" label="Dokumen NPWP"/>
-              <button class="ml-2 btn-indigo">Lihat</button>
-            </div>
-            <div class="w-full flex justify-start items-end md:w-1/2 px-3 mb-6 md:mb-0">
-              <file-input v-model="form.keterangan_dom" :error="form.errors.keterangan_dom" class="flex-1"
-                          type="file" label="Dokumen Surat Keterangan Domisili dari Kelurahan"/>
-              <button class="ml-2 btn-indigo">Lihat</button>
-            </div>
-          </div>
-          <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full flex justify-start items-end md:w-1/2 px-3 mb-6 md:mb-0">
-              <file-input v-model="form.sertif_kompetensi" :error="form.errors.sertif_kompetensi" class="flex-1"
-                          type="file" label="Sertifikat Kompetensi Bidang Pengelola Wakaf"/>
-              <button class="ml-2 btn-indigo">Lihat</button>
-            </div>
-            <div class="w-full flex justify-start items-end md:w-1/2 px-3 mb-6 md:mb-0">
-              <file-input v-model="form.rencana_kerja" :error="form.errors.rencana_kerja" class="flex-1"
-                          type="file" label="Rencana Kerja"/>
-              <button class="ml-2 btn-indigo">Lihat</button>
-
-            </div>
-          </div>
-          <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full flex justify-start items-end md:w-1/2 px-3 mb-6 md:mb-0">
-              <file-input v-model="form.surat_permohonan" :error="form.errors.surat_permohonan" class="flex-1"
-                          type="file" label="Surat Permohonan"/>
-              <button class="ml-2 btn-indigo">Lihat</button>
-
-            </div>
-            <div class="w-full flex justify-start items-end md:w-1/2 px-3 mb-6 md:mb-0">
-              <file-input v-model="form.surat_pernyataan_diaudit" :error="form.errors.surat_pernyataan_diaudit"
-                          class="flex-1"
-                          type="file" label="Surat Pernyataan Bersedia Diaudit"/>
-              <button class="ml-2 btn-indigo">Lihat</button>
-
-            </div>
-          </div>
-          <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full flex justify-start items-end md:w-1/2 px-3 mb-6 md:mb-0">
-              <file-input v-model="form.surat_wakaf_bulanan" :error="form.errors.surat_wakaf_bulanan" class="flex-1"
-                          type="file" label="Surat Pernyataan Laporan Data Wakaf Bulanan"/>
-              <button class="ml-2 btn-indigo">Lihat</button>
-
-            </div>
-            <div class="w-full flex justify-start items-end md:w-1/2 px-3 mb-6 md:mb-0">
-              <file-input v-model="form.surat_pelaksanaan_wakaf" :error="form.errors.surat_pelaksanaan_wakaf"
-                          class="flex-1"
-                          type="file" label="Surat Pernyataan Laporan Pelaksaan Wakaf per 6 bulan"/>
-              <button class="ml-2 btn-indigo">Lihat</button>
-
-            </div>
-          </div>
-          <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full flex justify-start items-end md:w-1/2 px-3 mb-6 md:mb-0">
-              <file-input v-model="form.surat_dana_operasional" :error="form.errors.surat_dana_operasional"
-                          class="flex-1"
-                          type="file" label="Surat Pernyataan Mempunyai Dana Operasional min. Rp 30 juta"/>
-              <button class="ml-2 btn-indigo">Lihat</button>
-
+            <div v-for="doc in document_list" class="w-full flex justify-start items-end md:w-1/2 px-3 mb-6 md:mb-0">
+              <file-input v-model="form[doc]" :error="form.errors[doc]" class="flex-1"
+                          type="file" :label="doc.name"/>
+              <button class="ml-2 btn-indigo" data-bs-toggle="modal" data-bs-target="#open_doc" @click="openModal(doc.name, lembaga.file[doc.label])">Lihat</button>
             </div>
           </div>
           <div class="flex justify-between -mx-3 mb-6">
@@ -301,6 +218,23 @@
       </div>
     </div>
     <!-- Section: Design Block -->
+    <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="open_doc" tabindex="-1" aria-labelledby="open_docLabel" aria-modal="true" role="dialog">
+      <div class="modal-dialog modal-lg relative w-auto pointer-events-none">
+        <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+          <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+            <h5 class="text-xl font-medium leading-normal text-gray-800" id="exampleModalLgLabel">
+              {{recent_doc}}
+            </h5>
+            <button type="button"
+                    class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body relative p-4">
+            <pdf :src="used_path"></pdf>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -313,7 +247,7 @@ import axios from "axios";
 import LoadingButton from "@/Shared/LoadingButton.vue";
 import FlashMessages from "@/Shared/FlashMessages.vue";
 import Layout from "@/Shared/Layout.vue";
-
+import pdf from "vue-pdf";
 export default {
   mounted() {
     this.getProvinces();
@@ -324,6 +258,11 @@ export default {
   },
   layout: Layout,
   methods: {
+    openModal(document_name, doc_path){
+      this.recent_path = doc_path;
+      this.recent_doc = document_name;
+      this.is_show = true;
+    },
     approveOrganization(){
       this.$swal.fire({
         title: 'Apakah Anda yakin ingin approve lembaga ini?',
@@ -425,14 +364,23 @@ export default {
     lembaga: Object,
   },
   components: {
+    pdf,
     Head,
     FileInput,
     TextareaInput,
     LoadingButton,
     FlashMessages
   },
+  computed: {
+    used_path(){
+      return '/pdf/'+this.recent_path;
+    }
+  },
   data() {
     return {
+      is_show : false,
+      recent_doc : '',
+      recent_path : '',
       remember: 'form',
       address: {
         province: this.lembaga.address.provinsi,
@@ -501,7 +449,62 @@ export default {
         file_ktp: null,
         file_riwayat_hidup: null,
       }),
+      document_list : [
+        {
+          'label' : 'akta_pendirian',
+          'name' : 'Akta Pendirian'
+        },
+        {
+          'label' : 'company_profile',
+          'name' : 'Company Profile'
+        },
+        {
+          'label' : 'npwp',
+          'name' : 'NPWP Nazhir'
+        },
+        {
+          'label' : 'pengesahan_kemenkumham',
+          'name' : 'Dokumen Pengesahan Kemenkumham'
+        },
+        {
+          'label' : 'rekomendasi_lkspwu',
+          'name' : 'Dokumen Rekomendasi LKSPWU'
+        },
+        {
+          'label' : 'keterangan_dom',
+          'name' : 'Dokumen Surat Keterangan Domisili dari Kelurahan'
+        },
+        {
+          'label' : 'sertif_kompetensi',
+          'name' : 'Memiliki Sertifikat Kompetensi Bidang Pengelola Wakaf Minimal 2 Orang'
+        },
+        {
+          'label' : 'rencana_kerja',
+          'name' : 'Rencana Kerja'
+        },
+        {
+          'label' : 'surat_permohonan',
+          'name' : 'Surat Permohonan'
+        },
+        {
+          'label' : 'surat_pernyataan_diaudit',
+          'name' : 'Surat Pernyataan Bersedia Diaudit'
+        },
+        {
+          'label' : 'surat_wakaf_bulanan',
+          'name' : 'Surat Pernyataan Laporan Data Wakaf Bulanan'
+        },
+        {
+          'label' : 'surat_pelaksanaan_wakaf',
+          'name' : 'Surat Pernyataan Laporan Pelaksaan Wakaf per 6 bulan'
+        },
+        {
+          'label' : 'surat_dana_operasional',
+          'name' : 'Surat Pernyataan Mempunyai Dana Operasional min. Rp 30 juta'
+        },
 
+
+      ],
       key: 1,
 
     }

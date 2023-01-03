@@ -33,6 +33,10 @@ Route::prefix('payment')->group(static function(){
     Route::post('/webhook/ewallet/status', [APIPaymentController::class, 'get_ewallet_response']);
 
 });
+Route::prefix('reports')->group(static function(){
+    Route::get('{id}', [ProgramController::class, 'get_reports']);
+
+});
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/profile', [APIAuthController::class, 'profile']);
     Route::get('/profile-detail', [APIAuthController::class, 'profile_detail']);
