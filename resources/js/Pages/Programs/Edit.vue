@@ -13,7 +13,8 @@
                         label="Kategori">
             <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
           </select-input>
-          <text-input v-model="form.target" :error="form.errors.target" class="pr-6 w-full lg:w-1/2" label="Target Dana (Rp)"/>
+          <text-input v-model="form.target" :error="form.errors.target" class="pr-6 w-full lg:w-1/2"
+                      label="Target Dana (Rp)"/>
         </div>
         <div class="p-4 max-h-150">
           <h4 class="mb-2 font-bold">Deskripsi</h4>
@@ -38,7 +39,8 @@
           </div>
           <div class="pr-6 pb-4 w-full lg:w-1/2 ">
             <label class="form-label font-bold">Kecamatan:</label>
-            <select v-model="address.district" :disabled="districts.length===0" @change="pickDistrict($event)" class="form-select">
+            <select v-model="address.district" :disabled="districts.length===0" @change="pickDistrict($event)"
+                    class="form-select">
               <option v-for="district in districts" :value="district">{{ district.kecamatan }}</option>
             </select>
           </div>
@@ -59,39 +61,53 @@
               <img v-bind:src="'http://'+getUrl()+'/img/'+program.cover">
             </div>
           </div>
-          <TextareaInput class="pr-6 pb-4 w-full lg:w-1/2" label="Alamat Detail" v-model="form.address_detail"></TextareaInput>
+          <TextareaInput class="pr-6 pb-4 w-full lg:w-1/2" label="Alamat Detail"
+                         v-model="form.address_detail"></TextareaInput>
         </div>
         <h3 class="my-3 font-bold">Berkas Persyaratan</h3>
-        <div class="flex flex-wrap" v-if="auth.user.role_id!=1">
+        <div v-if="program.organization_id!=null">
           <div class="flex items-end w-full lg:w-1/2 pr-4 mb-2">
             <file-input class="flex-1" v-model="form.surat_permohonan_wakaf" :error="form.errors.surat_permohonan_wakaf"
                         type="file" label="Surat Permohonan Wakaf"/>
-            <button class="ml-2 btn-indigo">Lihat</button>
+            <button class="ml-2 btn-indigo"
+                    type="button"
+                    data-bs-toggle="modal" data-bs-target="#open_doc" @click="openModal('Surat Permohonan Wakaf', 'surat_permohonan_wakaf')">Lihat</button>
           </div>
           <div class="flex items-end w-full lg:w-1/2 pr-4 mb-2">
             <file-input class="flex-1" v-model="form.surat_pendaftaran_wakaf" :error="form.errors.surat_pendaftaran_wakaf"
                         type="file" label="Surat Pendaftaran Wakaf"/>
-            <button class="ml-2 btn-indigo">Lihat</button>
+            <button class="ml-2 btn-indigo"
+                    type="button"
+                    data-bs-toggle="modal" data-bs-target="#open_doc"
+                    @click="openModal('Surat Pendaftaran Wakaf', 'surat_pendaftaran_wakaf')"
+            >Lihat</button>
           </div>
           <div class="flex items-end w-full lg:w-1/2 pr-4 mb-2">
             <file-input class="flex-1" v-model="form.ikrar_wakaf" :error="form.errors.ikrar_wakaf"
                         type="file" label="Ikrar Wakaf"/>
-            <button class="ml-2 btn-indigo">Lihat</button>
+            <button class="ml-2 btn-indigo"
+                    type="button"
+                    data-bs-toggle="modal" data-bs-target="#open_doc"
+                    @click="openModal('Ikrar Wakaf', 'ikrar_wakaf')"
+            >Lihat</button>
           </div>
           <div class="flex items-end w-full lg:w-1/2 pr-4 mb-2">
             <file-input class="flex-1" v-model="form.proposal_program" :error="form.errors.proposal_program"
                         type="file" label="Proposal Program Wakaf"/>
-            <button class="ml-2 btn-indigo">Lihat</button>
+            <button class="ml-2 btn-indigo" type="button"
+                    data-bs-toggle="modal" data-bs-target="#open_doc"
+                    @click="openModal('Proposal Program Wakaf', 'proposal_program')"
+            >Lihat</button>
           </div>
         </div>
         <h4 class="mb-2 mt-3 font-bold">Letak Koordinat Tempat Program Wakaf</h4>
         <div class="flex justify-start">
           <div class="mr-5" style="width:50%;height: 300px">
-            <LocationPicker v-model="form.location" :key="key" />
+            <LocationPicker v-model="form.location" :key="key"/>
           </div>
           <div>
             <text-input v-model="form.location.position.lat" aria-readonly="true" class="w-full" label="Latitude"/>
-            <text-input v-model="form.location.position.lng" aria-readonly="true"  class="w-full" label="Longitude"/>
+            <text-input v-model="form.location.position.lng" aria-readonly="true" class="w-full" label="Longitude"/>
           </div>
         </div>
 
@@ -100,23 +116,45 @@
             <a class="btn-indigo mr-2" v-if="program.status=='approved'" :href="'/reports?program_id='+program.id">Laporan</a>
             <div class="font-bold py-4" v-if="program.status=='waiting'&&auth.user.role_id==1">
               <div>
-                <button class="inline-block p-3 mr-2 bg-green-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="light" @click="approveProgram">Setujui</button>
-                <a class="inline-block p-3 mr-2 bg-red-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="light" href="/lembaga/daftar" role="button">Tolak</a>
+                <button
+                  class="inline-block p-3 mr-2 bg-green-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out"
+                  data-mdb-ripple="true" data-mdb-ripple-color="light" @click="approveProgram">Setujui
+                </button>
+                <a
+                  class="inline-block p-3 mr-2 bg-red-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out"
+                  data-mdb-ripple="true" data-mdb-ripple-color="light" href="/lembaga/daftar" role="button">Tolak</a>
               </div>
             </div>
           </div>
-
 
 
           <loading-button :loading="form.processing" class="btn-indigo" type="submit">Simpan Program</loading-button>
         </div>
       </form>
     </div>
+    <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" id="open_doc" tabindex="-1" aria-labelledby="open_docLabel" aria-modal="true" role="dialog">
+      <div class="modal-dialog modal-lg relative w-auto pointer-events-none">
+        <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+          <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+            <h5 class="text-xl font-medium leading-normal text-gray-800" id="exampleModalLgLabel">
+              {{recent_doc}}
+            </h5>
+            <button type="button"
+                    class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body relative p-4">
+            <pdf :src="used_path"></pdf>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
-import { Head, Link } from '@inertiajs/inertia-vue'
+import {Head, Link} from '@inertiajs/inertia-vue'
 import Layout from '@/Shared/Layout'
 import TextInput from '@/Shared/TextInput'
 import FileInput from '@/Shared/FileInput'
@@ -128,9 +166,11 @@ import {VueEditor} from "vue2-editor";
 import {ImageDrop} from 'quill-image-drop-module'
 import ImageResize from 'quill-image-resize-module--fix-imports-error'
 import axios from "axios";
+import pdf from "vue-pdf";
 
 export default {
   components: {
+    pdf,
     FileInput,
     Head,
     Link,
@@ -145,7 +185,12 @@ export default {
   props: {
     program: Object,
     categories: Array,
-    auth : Object
+    auth: Object
+  },
+  computed: {
+    used_path(){
+      return '/pdf/'+this.recent_path;
+    }
   },
   remember: 'form',
   mounted() {
@@ -157,26 +202,28 @@ export default {
   },
   data() {
     return {
+      recent_doc : '',
+      recent_path : '',
       address: {
         province: this.program.address.provinsi,
         city: {
-          'jenis' : this.program.address.jenis,
-          'kabupaten' : this.program.address.kabupaten,
-          'provinsi' : this.program.address.provinsi
+          'jenis': this.program.address.jenis,
+          'kabupaten': this.program.address.kabupaten,
+          'provinsi': this.program.address.provinsi
         },
         district: {
-          'kecamatan' : this.program.address.kecamatan,
-          'kabupaten' : this.program.address.kabupaten,
-          'jenis' : this.program.address.jenis,
-          'provinsi' : this.program.address.provinsi,
+          'kecamatan': this.program.address.kecamatan,
+          'kabupaten': this.program.address.kabupaten,
+          'jenis': this.program.address.jenis,
+          'provinsi': this.program.address.provinsi,
         },
         village: {
-          'id' : this.program.address.id,
-          'kelurahan' : this.program.address.kelurahan,
-          'kecamatan' : this.program.address.kecamatan,
-          'kabupaten' : this.program.address.kabupaten,
-          'jenis' : this.program.address.jenis,
-          'provinsi' : this.program.address.provinsi,
+          'id': this.program.address.id,
+          'kelurahan': this.program.address.kelurahan,
+          'kecamatan': this.program.address.kecamatan,
+          'kabupaten': this.program.address.kabupaten,
+          'jenis': this.program.address.jenis,
+          'provinsi': this.program.address.provinsi,
         },
         postalcode: this.program.address.kodepos.toString(),
         jenis: this.program.address.jenis,
@@ -203,13 +250,13 @@ export default {
         desc: this.program.desc,
         address_detail: this.program.address_detail,
         location: {
-          address : '',
-          position : {
+          address: '',
+          position: {
             lat: this.program.latitude,
             lng: this.program.longitude,
           }
         },
-        target : this.program.target,
+        target: this.program.target,
         cover: null,
         surat_permohonan_wakaf: null,
         surat_pendaftaran_wakaf: null,
@@ -222,7 +269,12 @@ export default {
     }
   },
   methods: {
-    approveProgram(){
+    openModal(document_name, doc_path){
+      this.recent_path = this.program.file[doc_path];
+      this.recent_doc = document_name;
+      this.is_show = true;
+    },
+    approveProgram() {
       this.$swal.fire({
         title: 'Apakah Anda yakin ingin approve program ini?',
         showDenyButton: false,
@@ -233,9 +285,9 @@ export default {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           axios
-            .get('/program/approve/'+this.program.id)
+            .get('/program/approve/' + this.program.id)
             .then(response => {
-              if(response.data.success==true){
+              if (response.data.success == true) {
                 this.$swal.fire('Disetujui!', '', response.data.message)
               } else {
                 this.$swal.fire('Gagal disetujui!', '', response.data.message)
@@ -245,7 +297,7 @@ export default {
       })
     },
 
-    getUrl(){
+    getUrl() {
       return window.location.host;
     },
     getProvinces() {
@@ -255,7 +307,7 @@ export default {
         })
     },
     pickProvince(event) {
-      if(event!=null){
+      if (event != null) {
         this.address.province = event.target.value;
       }
       var url = `/api/cities?provinsi=${this.address.province}`

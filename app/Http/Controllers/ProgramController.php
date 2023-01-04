@@ -112,6 +112,7 @@ class ProgramController extends Controller
         $selected_program = Program::with('category')
             ->where('id', $id)
             ->with('address')
+            ->with('file')
             ->first();
         $categories = Category::all();
         return Inertia::render('Programs/Edit', [
@@ -131,6 +132,7 @@ class ProgramController extends Controller
         $selected_program = Program::with('category')
             ->where('id', $id)
             ->with('address')
+            ->with('file')
             ->first();
         $categories = Category::all();
         return Inertia::render('Programs/Edit', [

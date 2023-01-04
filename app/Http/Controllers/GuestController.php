@@ -32,6 +32,7 @@ class GuestController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'role_id' => 2,
+                'status' => 'waiting'
             ]);
             $organization = Organization::create([
                 'phone' => $request->phone,

@@ -14,32 +14,32 @@
         </tr>
         <tr v-for="lembaga in organizations" :key="lembaga.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
           <td class="border-t">
-            <Link class="flex items-center px-6 py-4" :href="`/organizations/`+lembaga.id" tabindex="-1">
+            <Link class="flex items-center px-6 py-4" :href="`/organizations/`+lembaga.id+'/edit'" tabindex="-1">
               {{ lembaga.user.name }}
             </Link>
           </td>
           <td class="border-t">
-            <Link class="flex items-center px-6 py-4" :href="`/organizations/`+lembaga.id" tabindex="-1">
+            <Link class="flex items-center px-6 py-4" :href="`/organizations/`+lembaga.id+'/edit'" tabindex="-1">
               {{ lembaga.user.email }}
             </Link>
           </td>
           <td class="border-t">
-            <Link class="flex items-center px-6 py-4" :href="`/organizations/`+lembaga.id" tabindex="-1">
+            <Link class="flex items-center px-6 py-4" :href="`/organizations/`+lembaga.id+'/edit'" tabindex="-1">
               {{ lembaga.jenis_lembaga == 'organisasi' ? 'Organisasi' : 'Individu' }}
             </Link>
           </td>
           <td class="border-t">
-            <Link class="flex items-center px-6 py-4" :href="`/organizations/`+lembaga.id" tabindex="-1">
+            <Link class="flex items-center px-6 py-4" :href="`/organizations/`+lembaga.id+'/edit'" tabindex="-1">
               {{ lembaga.address.kabupaten }}
             </Link>
           </td>
           <td class="border-t">
-            <Link class="flex items-center px-6 py-4" :href="`/organizations/`+lembaga.id" tabindex="-1">
+            <Link class="flex items-center px-6 py-4" :href="`/organizations/`+lembaga.id+'/edit'" tabindex="-1">
               <div style="padding-top: 0.1em; padding-bottom: 0.1rem" class="text-xs px-3 bg-gray-200 text-gray-800 rounded-full">{{ status[lembaga.status] }}</div>
             </Link>
           </td>
           <td class="w-px border-t">
-            <Link class="flex items-center px-4" :href="`/organizations/`+lembaga.id" tabindex="-1">
+            <Link class="flex items-center px-4" :href="`/organizations/`+lembaga.id+'/edit'" tabindex="-1">
               <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />
             </Link>
           </td>

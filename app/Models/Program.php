@@ -23,4 +23,8 @@ class Program extends Model
     {
         return $this->belongsTo(Organization::class, 'organization_id', 'id')->with('user');
     }
+    public function file()
+    {
+        return $this->hasOne(ProgramFile::class, 'program_id', 'id');
+    }
 }
