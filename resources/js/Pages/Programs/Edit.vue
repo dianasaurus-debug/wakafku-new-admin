@@ -118,7 +118,7 @@
               <div>
                 <button
                   class="inline-block p-3 mr-2 bg-green-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out"
-                  data-mdb-ripple="true" data-mdb-ripple-color="light" @click="approveProgram">Setujui
+                  data-mdb-ripple="true" data-mdb-ripple-color="light" type="button" @click="approveProgram">Setujui
                 </button>
                 <a
                   class="inline-block p-3 mr-2 bg-red-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out"

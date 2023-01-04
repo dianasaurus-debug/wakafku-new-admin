@@ -207,8 +207,8 @@
           </div>
           <div class="flex justify-between -mx-3 mb-6">
             <div v-if="lembaga.status!='approved'">
-                <div><button @click="approveOrganization" class="inline-block p-3 mr-2 bg-green-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="light" v-if="lembaga.status=='waiting' || lembaga.status=='rejected'">Setujui</button>
-                  <button @click="rejectOrganization" class="inline-block p-3 mr-2 bg-red-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="light"  v-if="lembaga.status=='waiting'">Tolak</button>
+                <div><button @click="approveOrganization" type="button" class="inline-block p-3 mr-2 bg-green-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="light" v-if="lembaga.status=='waiting' || lembaga.status=='rejected'">Setujui</button>
+                  <button @click="rejectOrganization" type="button" class="inline-block p-3 mr-2 bg-red-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out" data-mdb-ripple="true" data-mdb-ripple-color="light"  v-if="lembaga.status=='waiting'">Tolak</button>
                 </div>
             </div>
             <div>
