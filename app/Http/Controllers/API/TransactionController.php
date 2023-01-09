@@ -17,7 +17,7 @@ class TransactionController extends Controller
             $all_transactions = WaqfTransaction::with('payment_method')
                 ->where('waqif_id', $user->id)
                 ->with('program')
-                ->orderBy('created_at')
+                ->orderBy('created_at', 'desc')
                 ->get();
             $data = array(
                 'status' => 'success',
