@@ -25,16 +25,16 @@ class PaymentController extends Controller
             $wakif = Waqif::where('user_id', Auth::id())->with('user')->first();
             $payment_method_data = PaymentMethod::where('label', $request->channel)->first();
             if ($payment_method_data->kind == 'va') {
-                $createVA = make_bank_payment($payment_method_data->label, $request->nominal);
+                $object_va = make_bank_payment($payment_method_data->label, $request->nominal);
             } else if ($payment_method_data->kind == 'retail') {
-                $createVA = make_retail_payment($payment_method_data->label, intval($request->nominal));
+                $object_va = make_retail_payment($payment_method_data->label, intval($request->nominal));
             }
             $ref_id = 'wakafku-ewallet-'.time();
 
             $transaction = WaqfTransaction::create([
                 'payment_due' => Carbon::parse(Carbon::now())->addHours(12),
-                'reference_code' => isset($createVA) && $payment_method_data != 'ewallet' ? $createVA[config('__constant.EXTERNAL_IDS')[$payment_method_data->kind]] : $ref_id,
-                'payment_code' => isset($createVA) && $payment_method_data != 'ewallet' ? $createVA[config('__constant.PAYMENT_CODES')[$payment_method_data->kind]] : $ref_id,
+                'reference_code' => isset($object_va) && $payment_method_data != 'ewallet' ? $object_va[config('__constant.EXTERNAL_IDS')[$payment_method_data->kind]] : $ref_id,
+                'payment_code' => isset($object_va) && $payment_method_data != 'ewallet' ? $object_va[config('__constant.PAYMENT_CODES')[$payment_method_data->kind]] : $ref_id,
                 'amount' => $request->nominal,
                 'payment_method_id' => $payment_method_data->id,
                 'jenis_wakaf' => $request->jenis,
