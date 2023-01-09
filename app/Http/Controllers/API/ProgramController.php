@@ -15,7 +15,7 @@ class ProgramController extends Controller
             if (isset($request->latawal) && isset($request->longawal)) {
                 if (request()->query('keyword')) {
                     $all_programs = Program::where('title', 'like', '%' . request()->query('keyword') . '%')
-                        ->orWhere('alamat_detail', 'like', '%' . request()->query('keyword') . '%')
+                        ->orWhere('address_detail', 'like', '%' . request()->query('keyword') . '%')
                         ->where('status', 'approved')
                         ->with('category')
                         ->get();
