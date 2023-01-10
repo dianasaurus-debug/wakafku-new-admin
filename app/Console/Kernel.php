@@ -21,7 +21,7 @@ class Kernel extends ConsoleKernel
     {
         $payment_reminders = PaymentReminder::where('is_activated', true)->get();
         foreach($payment_reminders as $reminder) {
-            $schedule->command('users:notify')->daily()->at('14:30')->when(function () use ($reminder) {
+            $schedule->command('users:notify')->daily()->at('15:00')->when(function () use ($reminder) {
                 return (
                     Carbon::parse($reminder->scheduled_date) == Carbon::today()
                 );
