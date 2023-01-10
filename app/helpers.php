@@ -87,6 +87,7 @@ if (!function_exists('create_mass_firebase_notif')) {
             die('Curl error: ' . curl_error($ch));
         }
         curl_close($ch);
+        return $output;
     }
 }
 if (!function_exists('get_all_admintokens')) {
