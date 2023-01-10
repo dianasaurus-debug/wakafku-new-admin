@@ -303,6 +303,30 @@ class PaymentController extends Controller
 
     }
 
+    public function list_reminder(Request $request)
+    {
+        try {
+            $wakif = Waqif::where('user_id', Auth::id())->with('user')->first();
+            $reminder = PaymentReminder::where('waqif_id', $wakif->id)->get();
+            return response()
+                ->json([
+                    'success' => true,
+                    'message' => 'Berhasil menampilkan data pengingat',
+                    'data' => $reminder
+                ]);
+
+
+        } catch (\Exception $exception) {
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan message : ' . $exception->getMessage() . ' di line ' . $exception->getLine(),
+                ]);
+        }
+
+    }
+
+
     public function update_reminder(Request $request)
     {
         try {
