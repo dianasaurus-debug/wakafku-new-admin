@@ -27,14 +27,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $payment_reminders = PaymentReminder::where('is_activated', true)->get();
-        foreach($payment_reminders as $reminder) {
-            $schedule->command('users:notify')->daily()->at('16:30')->when(function () use ($reminder) {
-                return (
-                    Carbon::parse($reminder->scheduled_date) == Carbon::today()
-                );
-            });
-        }
+        $schedule->command('users:notify')->everyFiveMinutes();
+//        $payment_reminders = PaymentReminder::where('is_activated', true)->get();
+//        foreach($payment_reminders as $reminder) {
+//            $schedule->command('users:notify')->daily()->at('16:30')->when(function () use ($reminder) {
+//                return (
+//                    Carbon::parse($reminder->scheduled_date) == Carbon::today()
+//                );
+//            });
+//        }
     }
 
     /**
