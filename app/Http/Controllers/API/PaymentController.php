@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\PaymentMethod;
+use App\Models\PaymentReminder;
 use App\Models\Program;
 use App\Models\User;
 use App\Models\WaqfReturn;
@@ -29,7 +30,7 @@ class PaymentController extends Controller
             } else if ($payment_method_data->kind == 'retail') {
                 $object_va = make_retail_payment($payment_method_data->label, intval($request->nominal));
             }
-            $ref_id = 'wakafku-ewallet-'.time();
+            $ref_id = 'wakafku-ewallet-' . time();
 
             $transaction = WaqfTransaction::create([
                 'payment_due' => Carbon::parse(Carbon::now())->addHours(12),
@@ -57,7 +58,7 @@ class PaymentController extends Controller
                 ->with('program')
                 ->with('payment_method')->first();
             if ($payment_method_data->kind == 'ewallet') {
-                $ref_id = 'wakafku-ewallet-'.time().$transaction_data->id;
+                $ref_id = 'wakafku-ewallet-' . time() . $transaction_data->id;
                 $intended_link = config('__constant.FCM_URL_TEST');
                 $phone_number = isset($request->phone_number) ? $request->phone_number : $wakif->phone;
                 $short_url = create_short_link($intended_link . '/payment?id=' . $transaction_data->id . '&is_failed=false');
@@ -65,7 +66,7 @@ class PaymentController extends Controller
                 $object_va = make_ewallet_payment($channel_property, $request->channel, $request->nominal, $ref_id);
             }
             $payment_link = null;
-            if($object_va){
+            if ($object_va) {
                 if (isset($object_va['actions'])) {
                     if ($request->channel == 'ID_SHOPEEPAY') {
                         $payment_link = $object_va['actions']['mobile_deeplink_checkout_url'];
@@ -74,8 +75,8 @@ class PaymentController extends Controller
                         $payment_link = $object_va['actions']['mobile_web_checkout_url'];
                     }
                 }
-                $transaction_data->update(['reference_code' => $object_va[config('__constant.EXTERNAL_IDS')[$payment_method_data->kind]] ]);
-                $transaction_data->update(['payment_code' => $object_va[config('__constant.PAYMENT_CODES')[$payment_method_data->kind]].time().$transaction_data->id ]);
+                $transaction_data->update(['reference_code' => $object_va[config('__constant.EXTERNAL_IDS')[$payment_method_data->kind]]]);
+                $transaction_data->update(['payment_code' => $object_va[config('__constant.PAYMENT_CODES')[$payment_method_data->kind]] . time() . $transaction_data->id]);
 
             } else {
                 return response()
@@ -198,8 +199,8 @@ class PaymentController extends Controller
                 $waqf->update(['paid_at' => Carbon::now()]);
                 $program->update(['terkumpul' => $program->terkumpul + $waqf->amount]);
                 $precentage = 0;
-                if($program->target!=0){
-                    $precentage = $program->terkumpul != 0 ? ($program->terkumpul/$program->target) * 100 : 0;
+                if ($program->target != 0) {
+                    $precentage = $program->terkumpul != 0 ? ($program->terkumpul / $program->target) * 100 : 0;
                 }
                 $program->update(['percentage' => $precentage]);
                 return response()
@@ -225,6 +226,7 @@ class PaymentController extends Controller
         }
 
     }
+
     public function get_ewallet_response(Request $request)
     {
         $notification_body = json_decode($request->getContent(), true);
@@ -245,8 +247,8 @@ class PaymentController extends Controller
                 $waqf->update(['paid_at' => Carbon::now()]);
                 $program->update(['terkumpul' => $program->terkumpul + $waqf->amount]);
                 $precentage = 0;
-                if($program->target!=0){
-                    $precentage = $program->terkumpul != 0 ? ($program->terkumpul/$program->target) * 100 : 0;
+                if ($program->target != 0) {
+                    $precentage = $program->terkumpul != 0 ? ($program->terkumpul / $program->target) * 100 : 0;
                 }
                 $program->update(['percentage' => $precentage]);
                 return response()
@@ -272,5 +274,60 @@ class PaymentController extends Controller
 
     }
 
+    public function create_reminder(Request $request)
+    {
+        try {
+
+            $wakif = Waqif::where('user_id', Auth::id())->with('user')->first();
+            $reminder = PaymentReminder::create([
+                'scheduled_date' => Carbon::parse($request->scheduled_date),
+                'waqif_id' => $wakif->id,
+                'notes' => $request->notes,
+                'is_activated' => true
+            ]);
+            return response()
+                ->json([
+                    'success' => true,
+                    'message' => 'Berhasil membuat data pengingat',
+                    'data' => $reminder
+                ]);
+
+
+        } catch (\Exception $exception) {
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan message : ' . $exception->getMessage() . ' di line ' . $exception->getLine(),
+                ]);
+        }
+
+    }
+
+    public function update_reminder(Request $request)
+    {
+        try {
+
+            $reminder = PaymentReminder::where('id', $request->id)->update([
+                'scheduled_date' => Carbon::parse($request->scheduled_date),
+                'notes' => $request->notes,
+                'is_activated' => $request->is_activated
+            ]);
+            return response()
+                ->json([
+                    'success' => true,
+                    'message' => 'Berhasil mengubah data pengingat',
+                    'data' => $reminder
+                ]);
+
+
+        } catch (\Exception $exception) {
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan message : ' . $exception->getMessage() . ' di line ' . $exception->getLine(),
+                ]);
+        }
+
+    }
 
 }
