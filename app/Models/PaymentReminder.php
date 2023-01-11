@@ -15,7 +15,7 @@ class PaymentReminder extends Model
     }
     public function transaction()
     {
-        return $this->hasOne(WaqfTransaction::class, 'transaction_id', 'id');
+        return $this->hasOne(WaqfTransaction::class, 'id', 'transaction_id');
     }
     public function program()
     {
