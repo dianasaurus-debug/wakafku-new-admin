@@ -61,7 +61,7 @@ class NotifyPayment extends Command
                 'amount' => $reminder->amount,
                 'payment_method_id' => $payment_method_data->id,
                 'jenis_wakaf' => 'abadi',
-                'atas_nama' => Auth::user()->name,
+                'atas_nama' => $user->name,
                 'program_id' => $reminder->program_id,
                 'waqif_id' => $waqif->id,
             ]);
