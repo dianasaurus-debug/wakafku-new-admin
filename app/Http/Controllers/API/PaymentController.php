@@ -312,7 +312,10 @@ class PaymentController extends Controller
     {
         try {
             $wakif = Waqif::where('user_id', Auth::id())->with('user')->first();
-            $reminder = PaymentReminder::where('waqif_id', $wakif->id)->get();
+            $reminder = PaymentReminder::where('waqif_id', $wakif->id)
+                ->with('program')
+                ->with('payment_method')
+                ->get();
             return response()
                 ->json([
                     'success' => true,
