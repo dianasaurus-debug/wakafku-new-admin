@@ -2,11 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Models\PaymentMethod;
 use App\Models\PaymentReminder;
 use App\Models\User;
+use App\Models\WaqfTransaction;
 use App\Models\Waqif;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Auth;
 
 class NotifyPayment extends Command
 {
@@ -41,13 +44,30 @@ class NotifyPayment extends Command
      */
     public function handle()
     {
-        $payment_reminders = PaymentReminder::where('is_activated', true)->get();
+        $payment_reminders = PaymentReminder::whereNull('transaction_id')->get();
 
         foreach($payment_reminders as $reminder) {
             $waqif = Waqif::where('id', $reminder->waqif_id)->first();
             $user = User::where('id', $waqif->user_id)->first();
-            create_notification_data($user->id, 'pembayaran', 'Waktunya Anda membayar wakaf hari ini!', 'Pembayaran wakaf setiap tanggal '.Carbon::parse($reminder->scheduled_date)->format('d M'));
-            create_firebase_notif($waqif->fcm_token, 'Waktunya Anda membayar wakaf hari ini!', 'Pembayaran wakaf setiap tanggal '.Carbon::parse($reminder->scheduled_date)->format('d M'));
+            $payment_method_data = PaymentMethod::where('id', $reminder->payment_method_id)->first();
+            if($payment_method_data->kind=='va'){
+                $object_va = make_bank_payment($payment_method_data->label, $reminder->amount);
+            }
+            $ref_id = 'wakafku-ewallet-' . time();
+            $transaction = WaqfTransaction::create([
+                'payment_due' => Carbon::parse(Carbon::now())->addHours(12),
+                'reference_code' => isset($object_va) && $payment_method_data->kind != 'ewallet' ? $object_va[config('__constant.EXTERNAL_IDS')[$payment_method_data->kind]] : $ref_id,
+                'payment_code' => isset($object_va) && $payment_method_data->kind != 'ewallet' ? $object_va[config('__constant.PAYMENT_CODES')[$payment_method_data->kind]] : $ref_id,
+                'amount' => $reminder->amount,
+                'payment_method_id' => $payment_method_data->id,
+                'jenis_wakaf' => 'abadi',
+                'atas_nama' => Auth::user()->name,
+                'program_id' => $reminder->program_id,
+                'waqif_id' => $waqif->id,
+            ]);
+            $reminder->update(['transaction_id' => $transaction->id]);
+            create_notification_data($user->id, 'pembayaran', 'Waktunya Anda membayar wakaf hari ini!', 'Pembayaran wakaf untuk jadwal tanggal '.Carbon::parse($reminder->scheduled_date)->format('d M Y'));
+            create_firebase_notif($waqif->fcm_token, 'Waktunya Anda membayar wakaf hari ini!', 'Pembayaran wakaf untuk jadwal tanggal '.Carbon::parse($reminder->scheduled_date)->format('d M Y'));
         }
     }
 }

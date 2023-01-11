@@ -34,8 +34,8 @@ class PaymentController extends Controller
 
             $transaction = WaqfTransaction::create([
                 'payment_due' => Carbon::parse(Carbon::now())->addHours(12),
-                'reference_code' => isset($object_va) && $payment_method_data != 'ewallet' ? $object_va[config('__constant.EXTERNAL_IDS')[$payment_method_data->kind]] : $ref_id,
-                'payment_code' => isset($object_va) && $payment_method_data != 'ewallet' ? $object_va[config('__constant.PAYMENT_CODES')[$payment_method_data->kind]] : $ref_id,
+                'reference_code' => isset($object_va) && $payment_method_data->kind != 'ewallet' ? $object_va[config('__constant.EXTERNAL_IDS')[$payment_method_data->kind]] : $ref_id,
+                'payment_code' => isset($object_va) && $payment_method_data->kind != 'ewallet' ? $object_va[config('__constant.PAYMENT_CODES')[$payment_method_data->kind]] : $ref_id,
                 'amount' => $request->nominal,
                 'payment_method_id' => $payment_method_data->id,
                 'jenis_wakaf' => $request->jenis,
@@ -277,16 +277,13 @@ class PaymentController extends Controller
     public function create_reminder(Request $request)
     {
         try {
-
             $wakif = Waqif::where('user_id', Auth::id())->with('user')->first();
-            $payment_method_data = PaymentMethod::where('label', $request->channel)->first();
-
             $reminder = PaymentReminder::create([
                 'scheduled_date' => Carbon::parse($request->scheduled_date),
                 'waqif_id' => $wakif->id,
                 'amount' => $request->amount,
                 'program_id' => $request->program_id,
-                'payment_method_id' => $payment_method_data->id,
+                'payment_method_id' => $request->payment_method_id,
                 'notes' => $request->notes,
                 'is_activated' => true
             ]);
