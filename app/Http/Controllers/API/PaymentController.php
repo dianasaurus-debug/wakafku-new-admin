@@ -279,9 +279,14 @@ class PaymentController extends Controller
         try {
 
             $wakif = Waqif::where('user_id', Auth::id())->with('user')->first();
+            $payment_method_data = PaymentMethod::where('label', $request->channel)->first();
+
             $reminder = PaymentReminder::create([
                 'scheduled_date' => Carbon::parse($request->scheduled_date),
                 'waqif_id' => $wakif->id,
+                'amount' => $request->amount,
+                'program_id' => $request->program_id,
+                'payment_method_id' => $payment_method_data->id,
                 'notes' => $request->notes,
                 'is_activated' => true
             ]);
