@@ -10,6 +10,7 @@ use App\Models\Waqif;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Auth;
+use Xendit\Xendit;
 
 class NotifyPayment extends Command
 {
@@ -51,7 +52,18 @@ class NotifyPayment extends Command
             $user = User::where('id', $waqif->user_id)->first();
             $payment_method_data = PaymentMethod::where('id', $reminder->payment_method_id)->first();
             if($payment_method_data->kind=='va'){
-                $object_va = make_bank_payment($payment_method_data->label, $reminder->amount);
+                $secret = env('XENDIT_API_KEY');
+                Xendit::setApiKey($secret);
+                $body = [
+                    "external_id" => 'wakafku-va-' . time(),
+                    "bank_code" => strtoupper($payment_method_data->label),
+                    "name" => $user->name,
+                    "expected_amount" => $reminder->amount,
+                    "is_closed" => true
+                ];
+                $createVA = \Xendit\VirtualAccounts::create($body);
+
+                $object_va = $createVA;
             }
             $ref_id = 'wakafku-ewallet-' . time();
             $transaction = WaqfTransaction::create([
