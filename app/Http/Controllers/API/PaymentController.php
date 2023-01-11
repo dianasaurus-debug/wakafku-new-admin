@@ -311,6 +311,7 @@ class PaymentController extends Controller
             $wakif = Waqif::where('user_id', Auth::id())->with('user')->first();
             $reminder = PaymentReminder::where('waqif_id', $wakif->id)
                 ->with('program')
+                ->with('transaction')
                 ->with('payment_method')
                 ->get();
             return response()

@@ -13,6 +13,10 @@ class PaymentReminder extends Model
     {
         return $this->belongsTo(PaymentMethod::class, 'payment_method_id', 'id');
     }
+    public function transaction()
+    {
+        return $this->hasOne(WaqfTransaction::class, 'transaction_id', 'id');
+    }
     public function program()
     {
         return $this->belongsTo(Program::class, 'program_id', 'id');
