@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
         foreach($payment_reminders as $reminder) {
             $schedule->command('users:notify')->daily()->at('7:00')->when(function () use ($reminder) {
                 return (
-                    Carbon::parse($reminder->scheduled_date) == Carbon::today()
+                    Carbon::parse($reminder->scheduled_date)->format('d-m-Y') == Carbon::today()->format('d-m-Y')
                 );
             });
         }
