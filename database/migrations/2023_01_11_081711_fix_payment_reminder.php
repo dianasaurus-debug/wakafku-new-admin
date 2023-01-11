@@ -18,6 +18,8 @@ class FixPaymentReminder extends Migration
             $table->string('amount');
             $table->unsignedBigInteger('program_id');
             $table->unsignedBigInteger('payment_method_id');
+            $table->unsignedBigInteger('transaction_id')->nullable();
+
         });
     }
 
