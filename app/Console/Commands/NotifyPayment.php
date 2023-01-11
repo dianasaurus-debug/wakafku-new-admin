@@ -78,8 +78,8 @@ class NotifyPayment extends Command
 //                'waqif_id' => $waqif->id,
 //            ]);
 //            $reminder->update(['transaction_id' => $transaction->id]);
-            create_notification_data($user->id, 'pembayaran', 'Waktunya Anda membayar wakaf hari ini!', 'Pembayaran wakaf untuk jadwal tanggal '.Carbon::parse($reminder->scheduled_date)->format('d M Y'));
-            create_firebase_notif($waqif->fcm_token, 'Waktunya Anda membayar wakaf hari ini!', 'Pembayaran wakaf untuk jadwal tanggal '.Carbon::parse($reminder->scheduled_date)->format('d M Y'));
+            create_notification_data($user->id, 'pembayaran', 'Waktunya Anda membayar wakaf hari ini!', 'Pembayaran wakaf untuk jadwal tanggal '.$reminder->scheduled_date);
+            create_firebase_notif($waqif->fcm_token, 'Waktunya Anda membayar wakaf hari ini!', 'Pembayaran wakaf untuk jadwal tanggal '.$reminder->scheduled_date);
         }
     }
 }
