@@ -16,14 +16,17 @@ class DashboardController extends Controller
     public function index()
     {
         $organization = null;
-        $total_programs = Program::count();
-        $total_waqif = Waqif::count();
-        $lembaga_count = Organization::count();
-        $total_transactions = WaqfTransaction::where('status', 1)->sum('amount');
         if (Auth::user()->role_id != 1) {
             $organization = Organization::with('user')
                 ->where('user_id', Auth::id())->first();
         }
+
+            $total_programs = Program::count();
+            $total_waqif = Waqif::count();
+            $lembaga_count = Organization::count();
+            $total_transactions = WaqfTransaction::where('status', 1)->sum('amount');
+
+
         return Inertia::render('Dashboard/Index', [
             'total_program' => $total_programs,
             'total_waqif' => $total_waqif,
